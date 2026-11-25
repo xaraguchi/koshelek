@@ -386,6 +386,62 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;back
 .th .m-hero{position:relative;overflow:hidden;height:124px;border-radius:var(--r2);background:var(--hero-deco),var(--hero);flex:none}
 .th .m-row{display:flex;gap:10px}
 .th .m-c{flex:1;height:70px;border-radius:var(--r);background:var(--card-art),color-mix(in srgb,var(--surface) 84%,transparent);border:1px solid var(--line)}
+
+/* onboarding */
+.ob{position:fixed;inset:0;z-index:40;background:var(--art),var(--bg);overflow:auto;
+  padding:calc(env(safe-area-inset-top,0px) + 24px) max(20px,env(safe-area-inset-right,0px)) calc(env(safe-area-inset-bottom,0px) + 24px) max(20px,env(safe-area-inset-left,0px))}
+.ob-in{max-width:460px;margin:0 auto;min-height:100%;display:flex;flex-direction:column;gap:18px}
+.ob-logo{width:84px;height:84px;border-radius:26px;background:var(--hero-deco),var(--hero);display:grid;place-items:center;color:var(--hero-fg);font-family:var(--font-display);font-size:42px;font-weight:600;
+  box-shadow:inset 0 1px 0 rgb(255 255 255 / .25),0 16px 36px -14px color-mix(in srgb,var(--accent) 70%,transparent);margin-top:12px}
+.ob h1{font-family:var(--font-display);font-weight:500;font-size:clamp(24px,7vw,30px);margin:0;line-height:1.15;text-wrap:balance;text-transform:var(--dcase);letter-spacing:var(--dtrack)}
+.ob p{margin:0;color:var(--muted);font-size:15px;line-height:1.5}
+.ob-prog{display:flex;gap:6px}
+.ob-prog i{flex:1;height:4px;border-radius:2px;background:var(--surface2)}
+.ob-prog i.on{background:var(--accent)}
+.ob-step{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;font-weight:600}
+.ob-opts{display:flex;flex-direction:column;gap:10px}
+.ob-opt{display:flex;align-items:center;gap:14px;border:1px solid var(--line);background:color-mix(in srgb,var(--surface) 88%,transparent);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
+  border-radius:16px;padding:12px 14px;text-align:left;font-weight:500;color:var(--fg);font-size:15px;transition:transform .12s ease}
+.ob-opt:active{transform:scale(.98)}
+.ob-opt .e{width:42px;height:42px;border-radius:12px;background:var(--surface2);display:grid;place-items:center;font-size:20px;flex:none;font-family:var(--font-display)}
+.ob-opt[aria-pressed="true"]{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 18%,var(--surface))}
+.ob-opt[aria-pressed="true"] .e{background:var(--accent);color:var(--on-accent)}
+.ob-foot{margin-top:auto;display:flex;gap:10px;padding-top:8px}
+.ob-langs{display:flex;gap:8px;flex-wrap:wrap}
+.ob .field{font-size:18px;padding:14px 16px}
+.btn:disabled{opacity:.45}
+/* switch & settings rows */
+.set-row{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.sw{position:relative;width:50px;height:30px;flex:none}
+.sw input{position:absolute;opacity:0;inset:0;margin:0;cursor:pointer;z-index:1}
+.sw span{position:absolute;inset:0;border-radius:15px;background:var(--surface2);border:1px solid var(--line);transition:background .2s}
+.sw span::after{content:"";position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:var(--fg);transition:transform .2s}
+.sw input:checked + span{background:var(--accent);border-color:var(--accent)}
+.sw input:checked + span::after{transform:translateX(20px);background:var(--on-accent)}
+.sw input:focus-visible + span{outline:2px solid var(--accent-hi);outline-offset:2px}
+/* calculator */
+.calc-disp{display:flex;flex-direction:column;align-items:flex-end;justify-content:flex-end;gap:6px;min-height:168px;padding:18px}
+.calc-prev{font-size:14px;color:var(--muted);min-height:1.2em;text-align:right;word-break:break-all}
+.calc-main{font-family:var(--font-display);font-weight:500;font-size:44px;line-height:1.1;text-align:right;word-break:break-all;max-width:100%}
+.calc-res{font-size:18px;color:var(--accent-hi);min-height:1.3em;font-variant-numeric:tabular-nums}
+.keys{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.key{height:64px;border-radius:18px;border:1px solid var(--line);background:color-mix(in srgb,var(--surface) 86%,transparent);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
+  font-size:24px;font-weight:500;color:var(--fg);transition:transform .1s ease,background .15s}
+.key.fn{background:var(--surface2);color:var(--accent-hi);font-size:19px;font-weight:600}
+.key.op{background:color-mix(in srgb,var(--accent) 22%,var(--surface));color:var(--accent-hi);font-size:28px}
+.key.op[aria-pressed="true"]{background:var(--accent);color:var(--on-accent)}
+.key.eq{background:linear-gradient(140deg,var(--accent-lo),var(--accent));color:var(--on-accent);font-size:30px;border:0}
+.key:active{transform:scale(.94)}
+.calc-use{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+/* admin */
+.au-list{display:flex;flex-direction:column}
+.au{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;padding:9px 0;border-top:1px solid var(--line)}
+.au:first-child{border-top:0}
+.au-n{display:flex;flex-direction:column;min-width:0}
+.au-n b{font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.au-n small,.au-d{font-size:12px;color:var(--muted)}
+.actions{grid-template-columns:repeat(4,minmax(0,1fr))}
+.act{font-size:12px}
 @media (prefers-reduced-motion:no-preference){
   .sheet{animation:up .24s cubic-bezier(.2,.8,.2,1)}@keyframes up{from{transform:translateY(40px);opacity:.3}}
   .screen{animation:fade .2s ease-out}@keyframes fade{from{opacity:.4;transform:translateY(6px)}}
@@ -428,6 +484,7 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;back
       <button class="act" data-add="i"><span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12l7 7 7-7"/></svg></span><span data-i18n="income1"></span></button>
       <button class="act" data-add="e"><span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg></span><span data-i18n="expense1"></span></button>
       <button class="act" data-go="history"><span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="3" y="4.5" width="18" height="17" rx="3"/><path d="M3 9.5h18M8 2.5v4M16 2.5v4"/></svg></span><span data-i18n="calendar"></span></button>
+      <button class="act" data-go="calc"><span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="4.5" y="2.5" width="15" height="19" rx="3"/><path d="M8 7h8M8.5 12h.01M12 12h.01M15.5 12h.01M8.5 16h.01M12 16h.01M15.5 16h.01"/></svg></span><span data-i18n="calc"></span></button>
     </div>
 
     <div class="card">
@@ -522,7 +579,19 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;back
       <div class="mrow static"><span class="mi"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17.5 19a4.5 4.5 0 1 0-1.4-8.8A6 6 0 0 0 4.5 12a3.5 3.5 0 0 0 1 7z"/></svg></span>
         <span><span data-i18n="storage" style="display:block"></span><span id="syncNote"></span></span></div>
     </div>
+    <div class="card" id="adminCard" hidden>
+      <div class="sec-h"><span class="sec-t"><span class="si"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.8-3.6 3.4-5.5 6.5-5.5s5.7 1.9 6.5 5.5M16 4.8a3.5 3.5 0 0 1 0 6.4M18.5 14.8c1.6.8 2.6 2.5 3 5.2"/></svg></span><h2 class="h2" data-i18n="admin"></h2></span><button class="link" id="adminRefresh" data-i18n="refresh"></button></div>
+      <p class="acc-hint" data-i18n="adminOnly" style="margin:0 0 12px"></p>
+      <div id="adminBody"></div>
+    </div>
     <div class="card dev" data-dev></div>
+  </section>
+
+  <!-- Calculator -->
+  <section class="screen" id="scr-calc" hidden style="display:flex;flex-direction:column;gap:14px">
+    <div class="card calc-disp" aria-live="polite"><div class="calc-prev num" id="cPrev"></div><div class="calc-main num" id="cMain">0</div><div class="calc-res" id="cRes"></div></div>
+    <div class="keys" id="keys"><button type="button" class="key fn" data-k="AC">AC</button><button type="button" class="key fn" data-k="back" aria-label="backspace">⌫</button><button type="button" class="key fn" data-k="%">%</button><button type="button" class="key op" data-k="/">÷</button><button type="button" class="key" data-k="7">7</button><button type="button" class="key" data-k="8">8</button><button type="button" class="key" data-k="9">9</button><button type="button" class="key op" data-k="*">×</button><button type="button" class="key" data-k="4">4</button><button type="button" class="key" data-k="5">5</button><button type="button" class="key" data-k="6">6</button><button type="button" class="key op" data-k="-">−</button><button type="button" class="key" data-k="1">1</button><button type="button" class="key" data-k="2">2</button><button type="button" class="key" data-k="3">3</button><button type="button" class="key op" data-k="+">+</button><button type="button" class="key fn" data-k="neg">±</button><button type="button" class="key" data-k="0">0</button><button type="button" class="key" data-k="." id="kDot">,</button><button type="button" class="key eq" data-k="=">=</button></div>
+    <div class="calc-use"><button type="button" class="btn ghost" data-cuse="e" data-i18n="toExpense"></button><button type="button" class="btn" data-cuse="i" data-i18n="toIncome"></button></div>
   </section>
 </div>
 
@@ -596,6 +665,10 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;back
     <div class="panel-sec"><p class="lbl-s" data-i18n="language"></p><div class="opt-list" id="langList" role="radiogroup" data-i18n-aria="language"></div></div>
     <div class="panel-sec"><p class="lbl-s" data-i18n="currency"></p><div class="opt-list" id="curList" role="radiogroup" data-i18n-aria="currency"></div>
       <p style="font-size:13px;color:var(--muted);margin:2px 0 0" data-i18n="curNote"></p></div>
+    <div class="panel-sec"><p class="lbl-s" data-i18n="reportTitle"></p>
+      <div class="set-row"><div><b data-i18n="report"></b><p class="acc-hint" data-i18n="reportNote" style="margin:2px 0 0"></p></div><label class="sw"><input type="checkbox" id="repToggle" data-i18n-aria="report"><span></span></label></div>
+      <button type="button" class="btn ghost" id="repNow" data-i18n="reportNow"></button>
+    </div>
     <div class="card dev" data-dev></div>
   </div>
 </div>
@@ -671,6 +744,7 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;back
     </div>
   </div>
 </form>
+<div class="ob" id="ob" hidden><div class="ob-in" id="obIn"></div></div>
 <div class="toast" id="toast" hidden></div>
 
 <script>
@@ -796,6 +870,8 @@ const I18N = {
 };
 const I18N_X = {"ru": {"accounts": "Счета", "totalBal": "Всего на счетах", "addAccount": "Новый счёт", "accLimit": "Можно завести до 4 счетов: карты или наличные.", "card": "Карта", "cash": "Наличные", "accName": "Название счёта", "startBal": "Сколько на счёте сейчас", "accSaved": "Счёт сохранён", "accDeleted": "Счёт удалён", "accDelNote": "Если удалить счёт, его операции перейдут на «{name}».", "accOnlyOne": "Нельзя удалить единственный счёт", "account": "Счёт", "allAccounts": "Все счета", "fromAcc": "Со счёта", "toAcc": "На счёт", "goals": "Цели", "newGoal": "Новая цель", "goalName": "На что копим", "goalTarget": "Сколько нужно", "goalDeadline": "К какой дате (необязательно)", "goalLeft": "Осталось {sum}", "goalDone": "Цель достигнута 🎉", "perMonth": "≈ {sum} в месяц", "deposit": "Пополнить", "withdraw": "Снять", "noGoals": "Целей пока нет. Добавьте первую: отпуск, телефон или подушку безопасности.", "goalSaved": "Цель сохранена", "goalDelNote": "Отложенные деньги вернутся на счета. Нажмите ещё раз, чтобы удалить.", "errGoalName": "Напишите, на что копите.", "errTooMuch": "Можно снять не больше {sum}", "sampleGoal": "Отпуск на море", "piggy": "Копилка", "piggyIn": "В копилке", "piggyHint": "Откладывайте понемногу — монетка к монетке", "otherAmount": "Другая сумма", "toGoal": "В цель «{name}»", "fromGoal": "Из цели «{name}»", "toPiggy": "В копилку", "fromPiggy": "Из копилки", "theme": "Тема", "devTitle": "О приложении", "devBy": "Разработчик", "devFeedback": "Принимаю предложения и жалобы. Пишите в Telegram, отвечу лично.", "write": "Написать разработчику", "themes": {"amethyst": "Аметист", "business": "Деловой", "japan": "Япония", "russia": "Россия", "kazakhstan": "Казахстан", "kyrgyzstan": "Кыргызстан", "forest": "Ночной лес", "light": "Светлая"}}, "ky": {"accounts": "Эсептер", "totalBal": "Бардык эсептерде", "addAccount": "Жаңы эсеп", "accLimit": "4 эсепке чейин ачууга болот: карта же накталай.", "card": "Карта", "cash": "Накталай", "accName": "Эсептин аталышы", "startBal": "Азыр эсепте канча бар", "accSaved": "Эсеп сакталды", "accDeleted": "Эсеп өчүрүлдү", "accDelNote": "Эсепти өчүрсөңүз, анын операциялары «{name}» эсебине өтөт.", "accOnlyOne": "Жалгыз эсепти өчүрүүгө болбойт", "account": "Эсеп", "allAccounts": "Бардык эсептер", "fromAcc": "Эсептен", "toAcc": "Эсепке", "goals": "Максаттар", "newGoal": "Жаңы максат", "goalName": "Эмнеге топтойбуз", "goalTarget": "Канча керек", "goalDeadline": "Кайсы датага чейин (милдеттүү эмес)", "goalLeft": "{sum} калды", "goalDone": "Максатка жеттиңиз 🎉", "perMonth": "айына ≈ {sum}", "deposit": "Толуктоо", "withdraw": "Алуу", "noGoals": "Максаттар али жок. Биринчисин кошуңуз: эс алуу, телефон же запас акча.", "goalSaved": "Максат сакталды", "goalDelNote": "Топтолгон акча эсептерге кайтат. Өчүрүү үчүн дагы бир жолу басыңыз.", "errGoalName": "Эмнеге топтоп жатканыңызды жазыңыз.", "errTooMuch": "Эң көп {sum} алууга болот", "sampleGoal": "Деңизде эс алуу", "piggy": "Топтомо", "piggyIn": "Топтомодо", "piggyHint": "Аз-аздан чогултуңуз — тыйындан тыйынга", "otherAmount": "Башка сумма", "toGoal": "«{name}» максатына", "fromGoal": "«{name}» максатынан", "toPiggy": "Топтомого", "fromPiggy": "Топтомодон", "theme": "Тема", "devTitle": "Тиркеме жөнүндө", "devBy": "Иштеп чыгуучу", "devFeedback": "Сунуштарды жана даттанууларды кабыл алам. Telegram аркылуу жазыңыз, өзүм жооп берем.", "write": "Иштеп чыгуучуга жазуу", "themes": {"amethyst": "Аметист", "business": "Иш стили", "japan": "Жапония", "russia": "Россия", "kazakhstan": "Казакстан", "kyrgyzstan": "Кыргызстан", "forest": "Түнкү токой", "light": "Ачык"}}, "kk": {"accounts": "Шоттар", "totalBal": "Барлық шоттарда", "addAccount": "Жаңа шот", "accLimit": "4 шотқа дейін ашуға болады: карта немесе қолма-қол.", "card": "Карта", "cash": "Қолма-қол", "accName": "Шоттың атауы", "startBal": "Қазір шотта қанша бар", "accSaved": "Шот сақталды", "accDeleted": "Шот жойылды", "accDelNote": "Шотты жойсаңыз, оның операциялары «{name}» шотына ауысады.", "accOnlyOne": "Жалғыз шотты жоюға болмайды", "account": "Шот", "allAccounts": "Барлық шоттар", "fromAcc": "Шоттан", "toAcc": "Шотқа", "goals": "Мақсаттар", "newGoal": "Жаңа мақсат", "goalName": "Неге жинаймыз", "goalTarget": "Қанша керек", "goalDeadline": "Қай күнге дейін (міндетті емес)", "goalLeft": "{sum} қалды", "goalDone": "Мақсатқа жеттіңіз 🎉", "perMonth": "айына ≈ {sum}", "deposit": "Толықтыру", "withdraw": "Алу", "noGoals": "Мақсаттар әлі жоқ. Біріншісін қосыңыз: демалыс, телефон немесе қор ақша.", "goalSaved": "Мақсат сақталды", "goalDelNote": "Жиналған ақша шоттарға қайтады. Жою үшін тағы бір рет басыңыз.", "errGoalName": "Неге жинап жатқаныңызды жазыңыз.", "errTooMuch": "Ең көбі {sum} алуға болады", "sampleGoal": "Теңізде демалу", "piggy": "Жинақ қорабы", "piggyIn": "Жинақта", "piggyHint": "Аз-аздан жинаңыз — тиыннан тиынға", "otherAmount": "Басқа сома", "toGoal": "«{name}» мақсатына", "fromGoal": "«{name}» мақсатынан", "toPiggy": "Жинақ қорабына", "fromPiggy": "Жинақ қорабынан", "theme": "Тақырып", "devTitle": "Қосымша туралы", "devBy": "Әзірлеуші", "devFeedback": "Ұсыныстар мен шағымдарды қабылдаймын. Telegram арқылы жазыңыз, өзім жауап беремін.", "write": "Әзірлеушіге жазу", "themes": {"amethyst": "Аметист", "business": "Іскерлік", "japan": "Жапония", "russia": "Ресей", "kazakhstan": "Қазақстан", "kyrgyzstan": "Қырғызстан", "forest": "Түнгі орман", "light": "Ашық"}}, "en": {"accounts": "Accounts", "totalBal": "Total balance", "addAccount": "New account", "accLimit": "You can have up to 4 accounts: cards or cash.", "card": "Card", "cash": "Cash", "accName": "Account name", "startBal": "Current balance", "accSaved": "Account saved", "accDeleted": "Account deleted", "accDelNote": "If you delete this account, its entries move to “{name}”.", "accOnlyOne": "You can’t delete your only account", "account": "Account", "allAccounts": "All accounts", "fromAcc": "From account", "toAcc": "To account", "goals": "Goals", "newGoal": "New goal", "goalName": "Saving for", "goalTarget": "Target amount", "goalDeadline": "By date (optional)", "goalLeft": "{sum} to go", "goalDone": "Goal reached 🎉", "perMonth": "≈ {sum} a month", "deposit": "Add money", "withdraw": "Take out", "noGoals": "No goals yet. Add one: a trip, a phone or a safety cushion.", "goalSaved": "Goal saved", "goalDelNote": "Saved money goes back to your accounts. Tap again to delete.", "errGoalName": "Name your goal.", "errTooMuch": "You can take out up to {sum}", "sampleGoal": "Beach vacation", "piggy": "Piggy bank", "piggyIn": "Saved", "piggyHint": "Put a little aside, coin by coin", "otherAmount": "Other amount", "toGoal": "To “{name}”", "fromGoal": "From “{name}”", "toPiggy": "To piggy bank", "fromPiggy": "From piggy bank", "theme": "Theme", "devTitle": "About", "devBy": "Developer", "devFeedback": "Suggestions and complaints are welcome. Message me on Telegram and I’ll reply personally.", "write": "Message the developer", "themes": {"amethyst": "Amethyst", "business": "Business", "japan": "Japan", "russia": "Russia", "kazakhstan": "Kazakhstan", "kyrgyzstan": "Kyrgyzstan", "forest": "Night forest", "light": "Light"}}};
 Object.keys(I18N_X).forEach(k => Object.assign(I18N[k], I18N_X[k]));
+const I18N_Y = {"ru": {"calc": "Калькулятор", "toExpense": "В расход", "toIncome": "В доход", "calcErr": "Ошибка", "reportTitle": "Отчёты", "report": "Отчёт в 22:00", "reportNote": "Бот пришлёт в чат, сколько вы потратили и получили за день.", "reportNow": "Прислать отчёт сейчас", "reportSent": "Отчёт отправлен в чат с ботом", "serverErr": "Сервер не ответил. Попробуйте позже.", "serverSoon": "Сервер ещё не подключён.", "onlyInTg": "Работает только внутри Telegram", "admin": "Пользователи Delta", "adminTotal": "всего", "adminActive": "за 7 дней", "adminReports": "с отчётом", "refresh": "Обновить", "noUsername": "без username", "adminOnly": "Это видите только вы как разработчик.", "obWelcome": "Добро пожаловать в Delta", "obSub": "Учёт доходов и расходов прямо в Telegram. Ответьте на 5 коротких вопросов, и всё будет готово.", "obStart": "Начать", "next": "Далее", "back": "Назад", "stepOf": "Вопрос {n} из 5", "q1": "Как к вам обращаться?", "q2": "Для чего вам Delta?", "q2o": ["Личные расходы", "Семейный бюджет", "Копить на цель", "Подработка или бизнес"], "q3": "Какая у вас главная цель?", "q3o": ["Тратить меньше", "Собрать подушку безопасности", "Закрыть долги", "Накопить на крупную покупку"], "q4": "Как вы чаще платите?", "q4o": ["Картой", "Наличными", "И так, и так"], "q4note": "Создадим счета с нулевым балансом. Их можно переименовать и пополнить позже.", "q5": "В какой валюте ведём учёт?", "obDone": "Всё готово, {name}!", "obDoneSub": "Баланс начинается с нуля. Добавьте первую запись кнопкой «+» внизу.", "obPrivacy": "Чтобы присылать отчёт, бот хранит ваш @username и итоги дня — только суммы, без подробностей. Разработчик видит лишь список пользователей.", "obOpen": "Открыть Delta"}, "ky": {"calc": "Калькулятор", "toExpense": "Чыгашага", "toIncome": "Кирешеге", "calcErr": "Ката", "reportTitle": "Отчеттор", "report": "Саат 22:00дө отчет", "reportNote": "Бот күн ичинде канча коротуп, канча алганыңызды чатка жөнөтөт.", "reportNow": "Отчетту азыр жөнөтүү", "reportSent": "Отчет бот менен чатка жөнөтүлдү", "serverErr": "Сервер жооп берген жок. Кийинчерээк аракет кылыңыз.", "serverSoon": "Сервер али туташа элек.", "onlyInTg": "Telegram ичинде гана иштейт", "admin": "Delta колдонуучулары", "adminTotal": "баары", "adminActive": "7 күндө", "adminReports": "отчет менен", "refresh": "Жаңылоо", "noUsername": "username жок", "adminOnly": "Муну иштеп чыгуучу катары сиз гана көрөсүз.", "obWelcome": "Deltaга кош келиңиз", "obSub": "Киреше жана чыгашаларды Telegramда эсептөө. 5 кыска суроого жооп бериңиз — баары даяр болот.", "obStart": "Баштоо", "next": "Кийинки", "back": "Артка", "stepOf": "{n}-суроо, 5тен", "q1": "Сизге кантип кайрылалы?", "q2": "Delta сизге эмне үчүн керек?", "q2o": ["Жеке чыгашалар", "Үй-бүлө бюджети", "Максатка топтоо", "Кошумча иш же бизнес"], "q3": "Негизги максатыңыз кайсы?", "q3o": ["Азыраак коротуу", "Запас акча чогултуу", "Карыздарды жабуу", "Чоң сатып алууга топтоо"], "q4": "Көбүнчө кантип төлөйсүз?", "q4o": ["Карта менен", "Накталай", "Экөө тең"], "q4note": "Нөлдүк баланс менен эсептер ачабыз. Аларды кийин өзгөртүп, толуктоого болот.", "q5": "Кайсы валютада эсептейбиз?", "obDone": "Баары даяр, {name}!", "obDoneSub": "Баланс нөлдөн башталат. Биринчи жазууну төмөндөгү «+» баскычы менен кошуңуз.", "obPrivacy": "Отчет жөнөтүү үчүн бот сиздин @username жана күндүн жыйынтыгын сактайт — суммалар гана, деталсыз. Иштеп чыгуучу колдонуучулардын тизмесин гана көрөт.", "obOpen": "Deltaны ачуу"}, "kk": {"calc": "Калькулятор", "toExpense": "Шығысқа", "toIncome": "Кіріске", "calcErr": "Қате", "reportTitle": "Есептер", "report": "Сағат 22:00-де есеп", "reportNote": "Бот күн ішінде қанша жұмсап, қанша алғаныңызды чатқа жібереді.", "reportNow": "Есепті қазір жіберу", "reportSent": "Есеп бот чатына жіберілді", "serverErr": "Сервер жауап бермеді. Кейінірек көріңіз.", "serverSoon": "Сервер әлі қосылмаған.", "onlyInTg": "Тек Telegram ішінде жұмыс істейді", "admin": "Delta пайдаланушылары", "adminTotal": "барлығы", "adminActive": "7 күнде", "adminReports": "есеппен", "refresh": "Жаңарту", "noUsername": "username жоқ", "adminOnly": "Мұны әзірлеуші ретінде тек сіз көресіз.", "obWelcome": "Delta-ға қош келдіңіз", "obSub": "Кірістер мен шығыстарды Telegram-да есептеу. 5 қысқа сұраққа жауап беріңіз — бәрі дайын болады.", "obStart": "Бастау", "next": "Келесі", "back": "Артқа", "stepOf": "{n}-сұрақ, 5-тен", "q1": "Сізге қалай жүгінейік?", "q2": "Delta сізге не үшін керек?", "q2o": ["Жеке шығыстар", "Отбасы бюджеті", "Мақсатқа жинау", "Қосымша жұмыс не бизнес"], "q3": "Басты мақсатыңыз қандай?", "q3o": ["Азырақ жұмсау", "Қор ақша жинау", "Қарыздарды жабу", "Ірі сатып алуға жинау"], "q4": "Көбіне қалай төлейсіз?", "q4o": ["Картамен", "Қолма-қол", "Екеуі де"], "q4note": "Нөлдік балансы бар шоттар ашамыз. Оларды кейін өзгертіп, толықтыруға болады.", "q5": "Қай валютада есептейміз?", "obDone": "Бәрі дайын, {name}!", "obDoneSub": "Баланс нөлден басталады. Бірінші жазбаны төмендегі «+» батырмасымен қосыңыз.", "obPrivacy": "Есеп жіберу үшін бот сіздің @username мен күн қорытындысын сақтайды — тек сомалар, егжей-тегжейсіз. Әзірлеуші тек пайдаланушылар тізімін көреді.", "obOpen": "Delta-ны ашу"}, "en": {"calc": "Calculator", "toExpense": "As expense", "toIncome": "As income", "calcErr": "Error", "reportTitle": "Reports", "report": "Report at 10 PM", "reportNote": "The bot sends you how much you spent and received today.", "reportNow": "Send report now", "reportSent": "Report sent to the bot chat", "serverErr": "The server did not respond. Try again later.", "serverSoon": "The server is not connected yet.", "onlyInTg": "Works only inside Telegram", "admin": "Delta users", "adminTotal": "total", "adminActive": "in 7 days", "adminReports": "with reports", "refresh": "Refresh", "noUsername": "no username", "adminOnly": "Only you see this as the developer.", "obWelcome": "Welcome to Delta", "obSub": "Track income and expenses right in Telegram. Answer 5 quick questions and you are set.", "obStart": "Start", "next": "Next", "back": "Back", "stepOf": "Question {n} of 5", "q1": "What should we call you?", "q2": "What will you use Delta for?", "q2o": ["Personal spending", "Family budget", "Saving for a goal", "Side job or business"], "q3": "What's your main goal?", "q3o": ["Spend less", "Build a safety cushion", "Pay off debts", "Save for a big purchase"], "q4": "How do you usually pay?", "q4o": ["By card", "In cash", "Both"], "q4note": "We will create accounts with a zero balance. You can rename and top them up later.", "q5": "Which currency do you use?", "obDone": "You're all set, {name}!", "obDoneSub": "Your balance starts at zero. Add your first entry with the “+” button below.", "obPrivacy": "To send reports, the bot stores your @username and daily totals — sums only, no details. The developer only sees the list of users.", "obOpen": "Open Delta"}};
+Object.keys(I18N_Y).forEach(k => Object.assign(I18N[k], I18N_Y[k]));
 const CURRENCIES = [ { v:'сом', code:'KGS' }, { v:'₸', code:'KZT' }, { v:'$', code:'USD' }, { v:'₽', code:'RUB' } ];
 function detectLang(){
   let code = '';
@@ -825,8 +901,8 @@ function sampleTx(){
 
 function sampleGoals(){ return [{ id:'gs1', em:'🏝️', name:'', target:300000, date:(new Date().getFullYear() + 1) + '-06-01', demo:true }]; }
 function sampleMoves(){ const n = Date.now(); return [{ id:'sg1', t:'g', g:'gs1', k:'in', a:45000, acc:'a1', d:n - 864e5 * 3, c:'', n:'' }, { id:'sg2', t:'g', g:'piggy', k:'in', a:7500, acc:'a2', d:n - 864e5, c:'', n:'' }]; }
-let S = { v:1, cur:'сом', lang:'', theme:'amethyst', demo:true, accounts:[{ id:'a1', name:'', kind:'card', start:0 }, { id:'a2', name:'', kind:'cash', start:60000 }],
-  goals:sampleGoals(), cats:DEFAULT_CATS, tx:sampleTx().concat(sampleMoves()), profile:{ name:'', photo:'' } };
+let S = { v:1, cur:'сом', lang:'', theme:'amethyst', demo:false, onboarded:false, report:true, accounts:[{ id:'a1', name:'', kind:'card', start:0 }],
+  goals:[], cats:DEFAULT_CATS, tx:[], profile:{ name:'', photo:'' } };
 let view = { y:new Date().getFullYear(), m:new Date().getMonth(), tab:'finance', ovType:'e', hf:'all', hc:'', ha:'', hd:0 };
 
 /* ---------- storage ---------- */
@@ -851,6 +927,7 @@ let saveTimer = null;
 function save(){
   const str = JSON.stringify(S);
   lsSet(str);
+  scheduleSync();
   if (!cloud) return;
   clearTimeout(saveTimer);
   saveTimer = setTimeout(() => {
@@ -962,22 +1039,23 @@ function txRow(x, wd){
 }
 
 /* ---------- render ---------- */
-const TITLES = { finance:'finance', history:'tabHistory', analytics:'analytics', profile:'profile' };
+const TITLES = { finance:'finance', history:'tabHistory', analytics:'analytics', profile:'profile', calc:'calc' };
 function render(){
   renderDate();
   document.querySelectorAll('.curSym').forEach(e => e.textContent = S.cur);
   $('screenTitle').textContent = T[TITLES[view.tab]];
   $('hdrAva').innerHTML = avatarInner();
   $('hdrAva').hidden = view.tab === 'profile';
-  $('mpill').hidden = view.tab === 'profile';
+  $('mpill').hidden = view.tab === 'profile' || view.tab === 'calc';
   $('monthTitle').textContent = monthLabel(view.y, view.m);
   $('txCur').textContent = S.cur;
   document.querySelectorAll('.tb').forEach(b => b.setAttribute('aria-selected', b.dataset.tab === view.tab));
-  ['finance','history','analytics','profile'].forEach(k => $('scr-' + k).hidden = view.tab !== k);
+  ['finance','history','analytics','profile','calc'].forEach(k => $('scr-' + k).hidden = view.tab !== k);
   if (view.tab === 'finance') renderFinance();
   if (view.tab === 'history') renderHistory();
   if (view.tab === 'analytics') renderAnalytics();
-  if (view.tab === 'profile') renderProfile();
+  if (view.tab === 'profile') { renderProfile(); renderAdminGate(); }
+  if (view.tab === 'calc') renderCalc();
   if (!$('setSheet').hidden) renderSettings();
   if (!$('catSheet').hidden) renderCats();
   if (!$('monthSheet').hidden) renderMonthSheet();
@@ -1130,7 +1208,7 @@ function renderSettings(){
   $('curList').innerHTML = CURRENCIES.map(c => `
     <button type="button" class="opt" role="radio" data-cur="${c.v}" aria-checked="${S.cur === c.v}">
       <span class="sym">${c.v}</span><span><b>${T.cur[c.v][0]}</b><small>${c.code} · ${T.cur[c.v][1]}</small></span><span class="chk">✓</span></button>`).join('');
-  renderThemes();
+  renderThemes(); renderReportSetting();
 }
 
 /* ---------- panels ---------- */
@@ -1584,6 +1662,227 @@ document.addEventListener('click', e => {
   if (a && tg && tg.openTelegramLink) { e.preventDefault(); tg.openTelegramLink(a.href); }
 });
 
+/* ---------- server sync (daily totals only) ---------- */
+const API = 'https://delta-bot.askarbekov-18.workers.dev';
+let syncT = null;
+function scheduleSync(){ if (!API || !tg || !tg.initData) return; clearTimeout(syncT); syncT = setTimeout(syncNow, 1500); }
+function dayKey(d){ return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()); }
+function totalsWhere(pred){
+  let spent = 0, earned = 0, n = 0;
+  S.tx.forEach(x => { const d = new Date(x.d); if (!pred(d)) return; if (x.t === 'e') { spent += x.a; n++; } else if (x.t === 'i') { earned += x.a; n++; } });
+  return { spent: Math.round(spent * 100) / 100, earned: Math.round(earned * 100) / 100, n };
+}
+async function api(path, body){
+  if (!API) throw new Error('no-api');
+  if (!tg || !tg.initData) throw new Error('no-tg');
+  const r = await fetch(API + path, { method:'POST', headers:{ 'content-type':'application/json' }, body: JSON.stringify(Object.assign({ initData: tg.initData }, body)) });
+  const j = await r.json().catch(() => ({}));
+  if (!r.ok || !j.ok) throw new Error(j.error || ('HTTP ' + r.status));
+  return j;
+}
+async function syncNow(){
+  if (!API || !tg || !tg.initData) return;
+  const now = new Date(), y = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1);
+  const days = [now, y].map(d => Object.assign({ day: dayKey(d) }, totalsWhere(x => sameDay(x, d))));
+  const month = Object.assign({ key: now.getFullYear() + '-' + pad(now.getMonth() + 1) }, totalsWhere(x => x.getFullYear() === now.getFullYear() && x.getMonth() === now.getMonth()));
+  try { await api('/api/sync', { tz: -now.getTimezoneOffset(), lang: S.lang, cur: S.cur, name: userName(), report: S.report !== false, onboarded: !!S.onboarded, days, month }); } catch(e){}
+}
+
+/* ---------- report setting ---------- */
+function renderReportSetting(){
+  $('repToggle').checked = S.report !== false;
+  $('repNow').hidden = !(tg && tg.initData);
+}
+$('repToggle').addEventListener('change', e => { S.report = e.target.checked; save(); haptic('success'); toast(T.report + ': ' + (S.report ? '✓' : '—')); });
+$('repNow').addEventListener('click', async () => {
+  const b = $('repNow'); b.disabled = true;
+  try { await syncNow(); await api('/api/report', {}); toast(T.reportSent); haptic('success'); }
+  catch(e){ toast(e.message === 'no-tg' ? T.onlyInTg : T.serverErr); haptic('error'); }
+  b.disabled = false;
+});
+
+/* ---------- admin (developer only) ---------- */
+const ADMIN_NAME = 'xaraguccidealers';
+const isAdmin = () => !!(tgUser && String(tgUser.username || '').toLowerCase() === ADMIN_NAME);
+let adminData = null, adminBusy = false;
+function renderAdminGate(){
+  const c = $('adminCard'); c.hidden = !isAdmin();
+  if (c.hidden) return;
+  if (!adminData && !adminBusy) loadAdmin(); else renderAdmin();
+}
+async function loadAdmin(){
+  adminBusy = true; renderAdmin();
+  try { adminData = await api('/api/admin', {}); } catch(e){ adminData = { error: e.message }; }
+  adminBusy = false; renderAdmin();
+}
+function renderAdmin(){
+  const box = $('adminBody');
+  if (adminBusy && !adminData) { box.innerHTML = `<div class="empty">…</div>`; return; }
+  if (!adminData) { box.innerHTML = ''; return; }
+  if (adminData.error) { box.innerHTML = `<div class="empty">${adminData.error === 'no-api' ? T.serverSoon : T.serverErr}</div>`; return; }
+  const d = adminData;
+  box.innerHTML = `<div class="stats" style="margin-bottom:12px">
+      <div class="stat"><b class="num">${nf.format(d.total)}</b><span>${T.adminTotal}</span></div>
+      <div class="stat"><b class="num">${nf.format(d.active)}</b><span>${T.adminActive}</span></div>
+      <div class="stat"><b class="num">${nf.format(d.reports)}</b><span>${T.adminReports}</span></div></div>
+    <div class="au-list">${(d.users || []).map(u => `<div class="au"><span class="ava" style="width:34px;height:34px;font-size:13px">${esc((u.first_name || u.username || '?').charAt(0).toUpperCase())}</span>
+      <span class="au-n"><b>${u.username ? '@' + esc(u.username) : '<i>' + T.noUsername + '</i>'}</b><small>${esc(u.first_name || '')}</small></span>
+      <small class="au-d">${u.created ? fmtDate(u.created, { day:'numeric', month:'short', year:'2-digit' }) : ''}</small></div>`).join('')}</div>`;
+}
+$('adminRefresh').addEventListener('click', () => { adminData = null; loadAdmin(); });
+
+/* ---------- calculator ---------- */
+const calc = { tokens: [], cur: '', prev: '', done: false };
+const isOp = t => t === '+' || t === '-' || t === '*' || t === '/';
+const OPS_SHOW = { '+':'+', '-':'−', '*':'×', '/':'÷' };
+function decSep(){ try { return (1.5).toLocaleString(LOC).charAt(1); } catch(e){ return ','; } }
+function cFmt(str){
+  if (str === '' || str === undefined) return '';
+  const neg = str.startsWith('-'); const [i, d] = str.replace('-', '').split('.');
+  let gi; try { gi = new Intl.NumberFormat(LOC, { maximumFractionDigits: 0 }).format(+i || 0); } catch(e){ gi = i; }
+  return (neg ? '−' : '') + gi + (d !== undefined ? decSep() + d : '');
+}
+function cNum(n){ if (!isFinite(n)) return n; const r = Math.round(n * 1e10) / 1e10; return String(r).includes('e') ? r.toFixed(10).replace(/\.?0+$/, '') : String(r); }
+function cEval(list){
+  const a = list.slice(); while (a.length && isOp(a[a.length - 1])) a.pop();
+  if (!a.length) return 0;
+  const nums = [parseFloat(a[0])], ops = [];
+  for (let k = 1; k < a.length; k += 2) {
+    const op = a[k], n = parseFloat(a[k + 1]);
+    if (op === '*' || op === '/') { const p = nums.pop(); if (op === '/' && n === 0) return NaN; nums.push(op === '*' ? p * n : p / n); }
+    else { ops.push(op); nums.push(n); }
+  }
+  let r = nums[0]; ops.forEach((op, i) => { r = op === '+' ? r + nums[i + 1] : r - nums[i + 1]; });
+  return Math.round(r * 1e10) / 1e10;
+}
+const cAll = () => calc.cur !== '' ? calc.tokens.concat([calc.cur]) : calc.tokens.slice();
+function cPress(k){
+  const c = calc;
+  if (/^[0-9]$/.test(k)) {
+    if (c.done) { c.cur = ''; c.tokens = []; c.done = false; }
+    if (c.cur.replace(/[-.]/g, '').length >= 15) return;
+    c.cur = c.cur === '0' ? k : c.cur === '-0' ? '-' + k : c.cur + k;
+  } else if (k === '.') {
+    if (c.done) { c.cur = ''; c.tokens = []; c.done = false; }
+    if (!c.cur) c.cur = '0.'; else if (!c.cur.includes('.')) c.cur += '.';
+  } else if (isOp(k)) {
+    c.done = false;
+    if (c.cur !== '') { c.tokens.push(c.cur.replace(/\.$/, '') || '0'); c.cur = ''; }
+    else if (c.tokens.length && isOp(c.tokens[c.tokens.length - 1])) { c.tokens[c.tokens.length - 1] = k; render0(); return; }
+    else if (!c.tokens.length) c.tokens = ['0'];
+    c.tokens.push(k);
+  } else if (k === '=') {
+    const all = cAll(); if (!all.length) return;
+    const r = cEval(all);
+    c.prev = cExpr(all) + ' =';
+    if (!isFinite(r)) { c.cur = ''; c.tokens = []; c.done = true; c.err = true; render0(); return; }
+    c.cur = cNum(r); c.tokens = []; c.done = true;
+  } else if (k === 'AC') {
+    c.tokens = []; c.cur = ''; c.prev = ''; c.done = false;
+  } else if (k === 'back') {
+    if (c.done) { c.done = false; c.prev = ''; }
+    if (c.cur) { c.cur = c.cur.slice(0, -1); if (c.cur === '-') c.cur = ''; }
+    else if (c.tokens.length) { c.tokens.pop(); if (c.tokens.length && !isOp(c.tokens[c.tokens.length - 1])) c.cur = c.tokens.pop(); }
+  } else if (k === 'neg') {
+    if (c.cur) c.cur = c.cur.startsWith('-') ? c.cur.slice(1) : '-' + c.cur;
+  } else if (k === '%') {
+    if (!c.cur) return;
+    const v = parseFloat(c.cur), t = c.tokens;
+    if (t.length >= 2 && (t[t.length - 1] === '+' || t[t.length - 1] === '-')) c.cur = cNum(cEval(t.slice(0, -1)) * v / 100);
+    else c.cur = cNum(v / 100);
+    c.done = false;
+  }
+  c.err = false;
+  render0();
+}
+function cExpr(list){ return list.map(t => isOp(t) ? ' ' + OPS_SHOW[t] + ' ' : cFmt(t)).join(''); }
+function render0(){ if (view.tab === 'calc') renderCalc(); }
+function renderCalc(){
+  const c = calc, all = cAll();
+  const main = c.err ? T.calcErr : (c.done ? cFmt(c.cur) : (cExpr(all) || '0'));
+  $('cMain').textContent = main;
+  $('cMain').style.fontSize = main.length > 18 ? '26px' : main.length > 12 ? '34px' : '44px';
+  $('cPrev').textContent = c.done ? c.prev : '';
+  const live = !c.done && all.filter(t => !isOp(t)).length > 1 ? cEval(all) : null;
+  $('cRes').textContent = live === null ? '' : isFinite(live) ? '= ' + cFmt(cNum(live)) : T.calcErr;
+  document.querySelectorAll('#keys .op').forEach(b => b.setAttribute('aria-pressed', !c.cur && c.tokens[c.tokens.length - 1] === b.dataset.k));
+  $('kDot').textContent = decSep();
+}
+$('keys').addEventListener('click', e => { const b = e.target.closest('[data-k]'); if (!b) return; cPress(b.dataset.k); tick(); });
+document.addEventListener('keydown', e => {
+  if (view.tab !== 'calc' || !$('overlay').hidden || !$('ob').hidden || /INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName)) return;
+  const map = { Enter:'=', '=':'=', Backspace:'back', Escape:'AC', Delete:'AC', ',':'.', '.':'.', '+':'+', '-':'-', '*':'*', '/':'/', x:'*', '%':'%' };
+  const k = /^[0-9]$/.test(e.key) ? e.key : map[e.key];
+  if (k) { e.preventDefault(); cPress(k); }
+});
+document.querySelectorAll('[data-cuse]').forEach(b => b.addEventListener('click', () => {
+  const all = cAll(); const v = calc.done ? parseFloat(calc.cur) : cEval(all);
+  if (!(v > 0)) { toast(T.errAmount); return; }
+  openSheet(null, b.dataset.cuse);
+  $('txAmount').value = cNum(v).replace('.', ',');
+}));
+
+/* ---------- onboarding: 5 questions ---------- */
+const OB_ICONS = { q2: ['👤','👨‍👩‍👧','🎯','💼'], q3: ['📉','🛟','🧾','🛍️'], q4: ['💳','💵','🔁'] };
+let ob = null;
+function defaultCur(){ return S.lang === 'kk' ? '₸' : S.lang === 'ru' ? '₽' : S.lang === 'en' ? '$' : 'сом'; }
+function openOnboarding(){
+  ob = { step: 0, name: userName() || '', purpose: S.purpose ?? -1, focus: S.focus ?? -1, pay: -1, cur: S.cur || defaultCur(), report: S.report !== false };
+  $('ob').hidden = false; renderOb();
+}
+function obCanNext(){
+  return ob.step === 1 ? ob.name.trim().length > 0 : ob.step === 2 ? ob.purpose >= 0 : ob.step === 3 ? ob.focus >= 0 : ob.step === 4 ? ob.pay >= 0 : true;
+}
+function renderOb(){
+  const st = ob.step; let h = '';
+  const opts = (list, sel, icons, key) => `<div class="ob-opts">${list.map((t, i) => `<button type="button" class="ob-opt" data-${key}="${i}" aria-pressed="${sel === i}"><span class="e">${icons[i]}</span><span>${esc(t)}</span></button>`).join('')}</div>`;
+  if (st === 0) {
+    h = `<div class="ob-logo">Δ</div><h1>${T.obWelcome}</h1><p>${T.obSub}</p>
+      <div class="panel-sec"><p class="lbl-s">${T.language}</p><div class="ob-langs">${LANGS.map(l => `<button type="button" class="chip" data-oblang="${l.v}" aria-pressed="${S.lang === l.v}">${l.native}</button>`).join('')}</div></div>
+      <div class="ob-foot"><button type="button" class="btn" style="flex:1" data-obgo="1">${T.obStart}</button></div>`;
+  } else if (st <= 5) {
+    h = `<div class="ob-prog">${[1,2,3,4,5].map(i => `<i class="${i <= st ? 'on' : ''}"></i>`).join('')}</div><span class="ob-step">${T.stepOf.replace('{n}', st)}</span>`;
+    if (st === 1) h += `<h1>${T.q1}</h1><input class="field" id="obName" maxlength="40" value="${esc(ob.name)}" placeholder="${esc(T.yourName)}" autocomplete="given-name">`;
+    if (st === 2) h += `<h1>${T.q2}</h1>` + opts(T.q2o, ob.purpose, OB_ICONS.q2, 'obpur');
+    if (st === 3) h += `<h1>${T.q3}</h1>` + opts(T.q3o, ob.focus, OB_ICONS.q3, 'obfoc');
+    if (st === 4) h += `<h1>${T.q4}</h1>` + opts(T.q4o, ob.pay, OB_ICONS.q4, 'obpay') + `<p class="acc-hint">${T.q4note}</p>`;
+    if (st === 5) h += `<h1>${T.q5}</h1><div class="ob-opts">${CURRENCIES.map(c => `<button type="button" class="ob-opt" data-obcur="${c.v}" aria-pressed="${ob.cur === c.v}"><span class="e">${c.v}</span><span>${T.cur[c.v][0]} <small style="color:var(--muted)">· ${c.code}</small></span></button>`).join('')}</div>`;
+    h += `<div class="ob-foot"><button type="button" class="btn ghost" data-obgo="${st - 1}">${T.back}</button><button type="button" class="btn" style="flex:1" data-obgo="${st + 1}" ${obCanNext() ? '' : 'disabled'}>${T.next}</button></div>`;
+  } else {
+    h = `<div class="ob-logo">✓</div><h1>${T.obDone.replace('{name}', esc(ob.name.trim()))}</h1><p>${T.obDoneSub}</p>
+      <div class="card" style="display:flex;flex-direction:column;gap:10px">
+        <div class="set-row"><div><b>${T.report}</b><p class="acc-hint" style="margin:2px 0 0">${T.reportNote}</p></div><label class="sw"><input type="checkbox" id="obRep" ${ob.report ? 'checked' : ''} aria-label="${esc(T.report)}"><span></span></label></div>
+        <p class="acc-hint" style="margin:0">${T.obPrivacy}</p></div>
+      <div class="ob-foot"><button type="button" class="btn ghost" data-obgo="5">${T.back}</button><button type="button" class="btn" style="flex:1" id="obFinish">${T.obOpen}</button></div>`;
+  }
+  $('obIn').innerHTML = h;
+  const n = $('obName'); if (n) { n.addEventListener('input', () => { ob.name = n.value; const nx = document.querySelector('#ob [data-obgo="2"]'); if (nx) nx.disabled = !obCanNext(); }); setTimeout(() => n.focus(), 50); }
+}
+$('ob').addEventListener('click', e => {
+  const t = e.target.closest('button'); if (!t) return;
+  if (t.dataset.oblang) { S.lang = t.dataset.oblang; setLang(S.lang); if (!S.tx.length) S.cur = defaultCur(); ob.cur = S.cur; render(); renderOb(); return; }
+  if (t.dataset.obpur !== undefined) { ob.purpose = +t.dataset.obpur; tick(); renderOb(); return; }
+  if (t.dataset.obfoc !== undefined) { ob.focus = +t.dataset.obfoc; tick(); renderOb(); return; }
+  if (t.dataset.obpay !== undefined) { ob.pay = +t.dataset.obpay; tick(); renderOb(); return; }
+  if (t.dataset.obcur) { ob.cur = t.dataset.obcur; tick(); renderOb(); return; }
+  if (t.dataset.obgo !== undefined) { const to = +t.dataset.obgo; if (to > ob.step && !obCanNext()) return; ob.step = Math.max(0, to); renderOb(); $('ob').scrollTop = 0; return; }
+  if (t.id === 'obFinish') finishOnboarding();
+});
+$('ob').addEventListener('change', e => { if (e.target.id === 'obRep') ob.report = e.target.checked; });
+function finishOnboarding(){
+  S.profile.name = ob.name.trim();
+  S.purpose = ob.purpose; S.focus = ob.focus; S.cur = ob.cur; S.report = ob.report;
+  if (!S.tx.length) {
+    S.accounts = ob.pay === 1 ? [{ id:'a1', name:'', kind:'cash', start:0 }]
+      : ob.pay === 2 ? [{ id:'a1', name:'', kind:'card', start:0 }, { id:'a2', name:'', kind:'cash', start:0 }]
+      : [{ id:'a1', name:'', kind:'card', start:0 }];
+    S.goals = []; S.demo = false;
+  }
+  S.onboarded = true;
+  save(); $('ob').hidden = true; view.tab = 'finance'; render(); haptic('success');
+  syncNow();
+}
+
 /* ---------- boot ---------- */
 const DEFAULT_RU = I18N.ru.cats;
 const OLD_COLORS = ['#E0704F','#3E8FD6','#D9A12B','#8E6BD8','#2FA58A','#D45B8E','#6A9A3A','#4FB3C4','#B7744A','#7C8794','#C9584A','#5470C6'];
@@ -1611,7 +1910,7 @@ if (tg) {
 if (!adopt(lsGet())) { S.lang = detectLang(); if (S.lang === 'kk') S.cur = '₸'; else if (S.lang === 'ru') S.cur = '₽'; else if (S.lang === 'en') S.cur = '$'; setLang(S.lang); }
 applyTheme(); render();
 setInterval(() => { const d = new Date().toDateString(); if (d !== lastDay) { lastDay = d; render(); } else renderDate(); }, 30000);
-cloudLoad().then(remote => { if (adopt(remote)) { lsSet(JSON.stringify(S)); applyTheme(); render(); } });
+cloudLoad().then(remote => { if (adopt(remote)) { lsSet(JSON.stringify(S)); applyTheme(); render(); } if (!S.onboarded) openOnboarding(); scheduleSync(); });
 })();
 </script>
 
