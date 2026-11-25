@@ -443,6 +443,15 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;back
 .au-n small,.au-d{font-size:12px;color:var(--muted)}
 .actions{grid-template-columns:repeat(4,minmax(0,1fr))}
 .act{font-size:12px}
+
+/* photo crop */
+.crop-box{position:relative;width:min(280px,76vw);aspect-ratio:1;max-width:100%;margin:0 auto;border-radius:22px;overflow:hidden;background:#000;touch-action:none;cursor:grab;user-select:none;-webkit-user-select:none}
+.crop-box:active{cursor:grabbing}
+.crop-box img{position:absolute;left:50%;top:50%;max-width:none;transform-origin:center;pointer-events:none;will-change:transform;-webkit-user-drag:none}
+.crop-box::after{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle closest-side at center,transparent 0 calc(100% - 1px),rgb(0 0 0 / .58) 100%)}
+.crop-ring{position:absolute;inset:0;border-radius:50%;box-shadow:inset 0 0 0 2px rgb(255 255 255 / .85);pointer-events:none;z-index:1}
+.crop-zoom{display:flex;align-items:center;gap:12px;color:var(--muted)}
+.crop-zoom input{flex:1;min-width:0;accent-color:var(--accent)}
 @media (prefers-reduced-motion:no-preference){
   .sheet{animation:up .24s cubic-bezier(.2,.8,.2,1)}@keyframes up{from{transform:translateY(40px);opacity:.3}}
   .screen{animation:fade .2s ease-out}@keyframes fade{from{opacity:.4;transform:translateY(6px)}}
@@ -745,6 +754,23 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;back
     </div>
   </div>
 </form>
+<div class="sheet" id="cropSheet" hidden>
+  <div class="sheet-in">
+    <div class="grab"></div>
+    <div class="panel-h"><h2 data-i18n="cropTitle"></h2></div>
+    <div class="crop-box" id="cropBox"><img id="cropImg" alt="" draggable="false"><span class="crop-ring"></span></div>
+    <p class="acc-hint" data-i18n="cropHint" style="margin:0;text-align:center"></p>
+    <div class="crop-zoom">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4M8 11h6"/></svg>
+      <input type="range" id="cropZoom" min="1" max="4" step="0.01" value="1" data-i18n-aria="zoom">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4M8 11h6M11 8v6"/></svg>
+    </div>
+    <div class="row">
+      <button type="button" class="btn ghost" data-close style="flex:1" data-i18n="cancel"></button>
+      <button type="button" class="btn" id="cropSave" style="flex:2" data-i18n="save"></button>
+    </div>
+  </div>
+</div>
 <div class="ob" id="ob" hidden><div class="ob-in" id="obIn"></div></div>
 <div class="toast" id="toast" hidden></div>
 
@@ -874,6 +900,8 @@ const I18N_X = {"ru": {"accounts": "Счета", "totalBal": "Всего на с
 Object.keys(I18N_X).forEach(k => Object.assign(I18N[k], I18N_X[k]));
 const I18N_Y = {"ru": {"calc": "Калькулятор", "toExpense": "В расход", "toIncome": "В доход", "calcErr": "Ошибка", "reportTitle": "Отчёты", "report": "Отчёт в 22:00", "reportNote": "Бот пришлёт в чат, сколько вы потратили и получили за день.", "reportNow": "Прислать отчёт сейчас", "reportSent": "Отчёт отправлен в чат с ботом", "serverErr": "Сервер не ответил. Попробуйте позже.", "serverSoon": "Сервер ещё не подключён.", "onlyInTg": "Работает только внутри Telegram", "admin": "Пользователи Delta", "adminTotal": "всего", "adminActive": "за 7 дней", "adminReports": "с отчётом", "refresh": "Обновить", "noUsername": "без username", "adminOnly": "Это видите только вы как разработчик.", "obWelcome": "Добро пожаловать в Delta", "obSub": "Учёт доходов и расходов прямо в Telegram. Ответьте на 5 коротких вопросов, и всё будет готово.", "obStart": "Начать", "next": "Далее", "back": "Назад", "stepOf": "Вопрос {n} из 5", "q1": "Как к вам обращаться?", "q2": "Для чего вам Delta?", "q2o": ["Личные расходы", "Семейный бюджет", "Копить на цель", "Подработка или бизнес"], "q3": "Какая у вас главная цель?", "q3o": ["Тратить меньше", "Собрать подушку безопасности", "Закрыть долги", "Накопить на крупную покупку"], "q4": "Как вы чаще платите?", "q4o": ["Картой", "Наличными", "И так, и так"], "q4note": "Создадим счета с нулевым балансом. Их можно переименовать и пополнить позже.", "q5": "В какой валюте ведём учёт?", "obDone": "Всё готово, {name}!", "obDoneSub": "Баланс начинается с нуля. Добавьте первую запись кнопкой «+» внизу.", "obPrivacy": "Чтобы присылать отчёт, бот хранит ваш @username и итоги дня — только суммы, без подробностей. Разработчик видит лишь список пользователей.", "obOpen": "Открыть Delta"}, "ky": {"calc": "Калькулятор", "toExpense": "Чыгашага", "toIncome": "Кирешеге", "calcErr": "Ката", "reportTitle": "Отчеттор", "report": "Саат 22:00дө отчет", "reportNote": "Бот күн ичинде канча коротуп, канча алганыңызды чатка жөнөтөт.", "reportNow": "Отчетту азыр жөнөтүү", "reportSent": "Отчет бот менен чатка жөнөтүлдү", "serverErr": "Сервер жооп берген жок. Кийинчерээк аракет кылыңыз.", "serverSoon": "Сервер али туташа элек.", "onlyInTg": "Telegram ичинде гана иштейт", "admin": "Delta колдонуучулары", "adminTotal": "баары", "adminActive": "7 күндө", "adminReports": "отчет менен", "refresh": "Жаңылоо", "noUsername": "username жок", "adminOnly": "Муну иштеп чыгуучу катары сиз гана көрөсүз.", "obWelcome": "Deltaга кош келиңиз", "obSub": "Киреше жана чыгашаларды Telegramда эсептөө. 5 кыска суроого жооп бериңиз — баары даяр болот.", "obStart": "Баштоо", "next": "Кийинки", "back": "Артка", "stepOf": "{n}-суроо, 5тен", "q1": "Сизге кантип кайрылалы?", "q2": "Delta сизге эмне үчүн керек?", "q2o": ["Жеке чыгашалар", "Үй-бүлө бюджети", "Максатка топтоо", "Кошумча иш же бизнес"], "q3": "Негизги максатыңыз кайсы?", "q3o": ["Азыраак коротуу", "Запас акча чогултуу", "Карыздарды жабуу", "Чоң сатып алууга топтоо"], "q4": "Көбүнчө кантип төлөйсүз?", "q4o": ["Карта менен", "Накталай", "Экөө тең"], "q4note": "Нөлдүк баланс менен эсептер ачабыз. Аларды кийин өзгөртүп, толуктоого болот.", "q5": "Кайсы валютада эсептейбиз?", "obDone": "Баары даяр, {name}!", "obDoneSub": "Баланс нөлдөн башталат. Биринчи жазууну төмөндөгү «+» баскычы менен кошуңуз.", "obPrivacy": "Отчет жөнөтүү үчүн бот сиздин @username жана күндүн жыйынтыгын сактайт — суммалар гана, деталсыз. Иштеп чыгуучу колдонуучулардын тизмесин гана көрөт.", "obOpen": "Deltaны ачуу"}, "kk": {"calc": "Калькулятор", "toExpense": "Шығысқа", "toIncome": "Кіріске", "calcErr": "Қате", "reportTitle": "Есептер", "report": "Сағат 22:00-де есеп", "reportNote": "Бот күн ішінде қанша жұмсап, қанша алғаныңызды чатқа жібереді.", "reportNow": "Есепті қазір жіберу", "reportSent": "Есеп бот чатына жіберілді", "serverErr": "Сервер жауап бермеді. Кейінірек көріңіз.", "serverSoon": "Сервер әлі қосылмаған.", "onlyInTg": "Тек Telegram ішінде жұмыс істейді", "admin": "Delta пайдаланушылары", "adminTotal": "барлығы", "adminActive": "7 күнде", "adminReports": "есеппен", "refresh": "Жаңарту", "noUsername": "username жоқ", "adminOnly": "Мұны әзірлеуші ретінде тек сіз көресіз.", "obWelcome": "Delta-ға қош келдіңіз", "obSub": "Кірістер мен шығыстарды Telegram-да есептеу. 5 қысқа сұраққа жауап беріңіз — бәрі дайын болады.", "obStart": "Бастау", "next": "Келесі", "back": "Артқа", "stepOf": "{n}-сұрақ, 5-тен", "q1": "Сізге қалай жүгінейік?", "q2": "Delta сізге не үшін керек?", "q2o": ["Жеке шығыстар", "Отбасы бюджеті", "Мақсатқа жинау", "Қосымша жұмыс не бизнес"], "q3": "Басты мақсатыңыз қандай?", "q3o": ["Азырақ жұмсау", "Қор ақша жинау", "Қарыздарды жабу", "Ірі сатып алуға жинау"], "q4": "Көбіне қалай төлейсіз?", "q4o": ["Картамен", "Қолма-қол", "Екеуі де"], "q4note": "Нөлдік балансы бар шоттар ашамыз. Оларды кейін өзгертіп, толықтыруға болады.", "q5": "Қай валютада есептейміз?", "obDone": "Бәрі дайын, {name}!", "obDoneSub": "Баланс нөлден басталады. Бірінші жазбаны төмендегі «+» батырмасымен қосыңыз.", "obPrivacy": "Есеп жіберу үшін бот сіздің @username мен күн қорытындысын сақтайды — тек сомалар, егжей-тегжейсіз. Әзірлеуші тек пайдаланушылар тізімін көреді.", "obOpen": "Delta-ны ашу"}, "en": {"calc": "Calculator", "toExpense": "As expense", "toIncome": "As income", "calcErr": "Error", "reportTitle": "Reports", "report": "Report at 10 PM", "reportNote": "The bot sends you how much you spent and received today.", "reportNow": "Send report now", "reportSent": "Report sent to the bot chat", "serverErr": "The server did not respond. Try again later.", "serverSoon": "The server is not connected yet.", "onlyInTg": "Works only inside Telegram", "admin": "Delta users", "adminTotal": "total", "adminActive": "in 7 days", "adminReports": "with reports", "refresh": "Refresh", "noUsername": "no username", "adminOnly": "Only you see this as the developer.", "obWelcome": "Welcome to Delta", "obSub": "Track income and expenses right in Telegram. Answer 5 quick questions and you are set.", "obStart": "Start", "next": "Next", "back": "Back", "stepOf": "Question {n} of 5", "q1": "What should we call you?", "q2": "What will you use Delta for?", "q2o": ["Personal spending", "Family budget", "Saving for a goal", "Side job or business"], "q3": "What's your main goal?", "q3o": ["Spend less", "Build a safety cushion", "Pay off debts", "Save for a big purchase"], "q4": "How do you usually pay?", "q4o": ["By card", "In cash", "Both"], "q4note": "We will create accounts with a zero balance. You can rename and top them up later.", "q5": "Which currency do you use?", "obDone": "You're all set, {name}!", "obDoneSub": "Your balance starts at zero. Add your first entry with the “+” button below.", "obPrivacy": "To send reports, the bot stores your @username and daily totals — sums only, no details. The developer only sees the list of users.", "obOpen": "Open Delta"}};
 Object.keys(I18N_Y).forEach(k => Object.assign(I18N[k], I18N_Y[k]));
+const I18N_Z = {"ru": {"cropTitle": "Фото профиля", "cropHint": "Перетащите фото и приблизьте, чтобы в круг попала нужная часть", "zoom": "Масштаб"}, "ky": {"cropTitle": "Профиль сүрөтү", "cropHint": "Тегерекке керектүү бөлүгү түшүшү үчүн сүрөттү жылдырып, чоңойтуңуз", "zoom": "Масштаб"}, "kk": {"cropTitle": "Профиль фотосы", "cropHint": "Шеңберге қажетті бөлігі түсуі үшін фотоны жылжытып, үлкейтіңіз", "zoom": "Масштаб"}, "en": {"cropTitle": "Profile photo", "cropHint": "Drag and zoom so the part you want fits in the circle", "zoom": "Zoom"}};
+Object.keys(I18N_Z).forEach(k => Object.assign(I18N[k], I18N_Z[k]));
 const CURRENCIES = [ { v:'сом', code:'KGS' }, { v:'₸', code:'KZT' }, { v:'$', code:'USD' }, { v:'₽', code:'RUB' } ];
 function detectLang(){
   let code = '';
@@ -1221,6 +1249,7 @@ function openPanel(id){
   tg && tg.BackButton && tg.BackButton.show();
 }
 function closePanels(){
+  try { if (tg && tg.enableVerticalSwipes) tg.enableVerticalSwipes(); } catch(e){}
   document.querySelectorAll('.sheet').forEach(s => s.hidden = true);
   $('overlay').hidden = true; edit = null;
   tg && tg.BackButton && tg.BackButton.hide();
@@ -1346,13 +1375,7 @@ $('photoInput').addEventListener('change', e => {
   r.onload = () => {
     const img = new Image();
     img.onerror = () => toast(T.photoErr);
-    img.onload = () => {
-      const s = 200, c = document.createElement('canvas'); c.width = c.height = s;
-      const k = Math.max(s / img.width, s / img.height), w = img.width * k, h = img.height * k;
-      c.getContext('2d').drawImage(img, (s - w) / 2, (s - h) / 2, w, h);
-      S.profile.photo = c.toDataURL('image/jpeg', 0.82);
-      save(); render(); haptic('success'); toast(T.photoSaved);
-    };
+    img.onload = () => openCrop(img);
     img.src = r.result;
   };
   r.readAsDataURL(f);
@@ -1887,6 +1910,66 @@ function finishOnboarding(){
   save(); $('ob').hidden = true; view.tab = 'finance'; render(); haptic('success');
   syncNow();
 }
+
+
+/* ---------- photo crop: drag, pinch, wheel, slider ---------- */
+const crop = { img: null, w: 0, h: 0, base: 1, z: 1, x: 0, y: 0, V: 280, pts: new Map(), d0: 0, z0: 1 };
+function openCrop(img){
+  Object.assign(crop, { img, w: img.naturalWidth, h: img.naturalHeight, z: 1, x: 0, y: 0, d0: 0 });
+  crop.pts.clear();
+  const el = $('cropImg'); el.src = img.src;
+  $('cropZoom').value = 1;
+  openPanel('cropSheet');
+  try { if (tg && tg.disableVerticalSwipes) tg.disableVerticalSwipes(); } catch(e){}
+  requestAnimationFrame(() => {
+    crop.V = $('cropBox').clientWidth || 280;
+    crop.base = Math.max(crop.V / crop.w, crop.V / crop.h);
+    el.style.width = crop.w * crop.base + 'px';
+    el.style.height = crop.h * crop.base + 'px';
+    cropApply();
+  });
+}
+function cropApply(){
+  const s = crop.base * crop.z;
+  const mx = Math.max(0, (crop.w * s - crop.V) / 2), my = Math.max(0, (crop.h * s - crop.V) / 2);
+  crop.x = Math.min(mx, Math.max(-mx, crop.x));
+  crop.y = Math.min(my, Math.max(-my, crop.y));
+  $('cropImg').style.transform = `translate(calc(-50% + ${crop.x.toFixed(1)}px), calc(-50% + ${crop.y.toFixed(1)}px)) scale(${crop.z.toFixed(3)})`;
+}
+function cropZoom(z){ crop.z = Math.min(4, Math.max(1, z)); $('cropZoom').value = crop.z; cropApply(); }
+(function(){
+  const box = $('cropBox');
+  const pair = () => { const [a, b] = [...crop.pts.values()]; return Math.hypot(a.x - b.x, a.y - b.y); };
+  box.addEventListener('pointerdown', e => {
+    e.preventDefault();
+    try { box.setPointerCapture(e.pointerId); } catch(_){}
+    crop.pts.set(e.pointerId, { x: e.clientX, y: e.clientY });
+    if (crop.pts.size === 2) { crop.d0 = pair(); crop.z0 = crop.z; }
+  });
+  box.addEventListener('pointermove', e => {
+    const p = crop.pts.get(e.pointerId); if (!p) return;
+    if (crop.pts.size === 1) { crop.x += e.clientX - p.x; crop.y += e.clientY - p.y; }
+    p.x = e.clientX; p.y = e.clientY;
+    if (crop.pts.size === 2 && crop.d0) { cropZoom(crop.z0 * pair() / crop.d0); return; }
+    cropApply();
+  });
+  const up = e => { crop.pts.delete(e.pointerId); if (crop.pts.size < 2) crop.d0 = 0; };
+  box.addEventListener('pointerup', up); box.addEventListener('pointercancel', up);
+  box.addEventListener('wheel', e => { e.preventDefault(); cropZoom(crop.z * (e.deltaY < 0 ? 1.08 : 1 / 1.08)); }, { passive: false });
+})();
+$('cropZoom').addEventListener('input', e => cropZoom(+e.target.value));
+$('cropSave').addEventListener('click', () => {
+  if (!crop.img) return;
+  const out = 256, k = out / crop.V, s = crop.base * crop.z;
+  const dw = crop.w * s, dh = crop.h * s;
+  const left = crop.V / 2 + crop.x - dw / 2, top = crop.V / 2 + crop.y - dh / 2;
+  const c = document.createElement('canvas'); c.width = c.height = out;
+  const ctx = c.getContext('2d'); ctx.imageSmoothingQuality = 'high';
+  ctx.drawImage(crop.img, left * k, top * k, dw * k, dh * k);
+  S.profile.photo = c.toDataURL('image/jpeg', 0.85);
+  crop.img = null;
+  closePanels(); save(); render(); haptic('success'); toast(T.photoSaved);
+});
 
 /* ---------- boot ---------- */
 const DEFAULT_RU = I18N.ru.cats;
