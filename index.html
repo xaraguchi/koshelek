@@ -55,8 +55,17 @@ button{cursor:pointer}
 .banner button{border:0;background:var(--surface);border-radius:8px;padding:6px 10px;font-weight:600;color:var(--fg);white-space:nowrap}
 
 /* tabs */
-.tabs{display:grid;grid-template-columns:repeat(3,1fr);background:var(--sunk);border-radius:12px;padding:4px;gap:4px}
-.tabs button{border:0;background:transparent;border-radius:9px;padding:8px 4px;font-weight:600;font-size:14px;color:var(--muted)}
+.tabs{display:grid;grid-template-columns:repeat(4,1fr);background:var(--sunk);border-radius:12px;padding:4px;gap:4px}
+.tabs button{border:0;background:transparent;border-radius:9px;padding:8px 2px;font-weight:600;font-size:12px;color:var(--muted);min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cur-list{display:flex;flex-direction:column;gap:8px}
+.cur-opt{display:grid;grid-template-columns:44px 1fr auto;gap:12px;align-items:center;border:1px solid var(--line);background:var(--bg);border-radius:12px;padding:10px 12px;text-align:left;width:100%}
+.cur-opt .sym{width:44px;height:44px;border-radius:12px;background:var(--sunk);display:grid;place-items:center;font-family:var(--font-display);font-weight:500;font-size:16px}
+.cur-opt b{display:block;font-weight:600}
+.cur-opt small{color:var(--muted);font-size:12px}
+.cur-opt .chk{width:22px;height:22px;border-radius:50%;border:2px solid var(--line);display:grid;place-items:center;font-size:13px;color:transparent}
+.cur-opt[aria-checked="true"]{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 10%,var(--bg))}
+.cur-opt[aria-checked="true"] .sym{background:var(--accent);color:var(--accent-fg)}
+.cur-opt[aria-checked="true"] .chk{border-color:var(--accent);background:var(--accent);color:var(--accent-fg)}
 .tabs button[aria-selected="true"]{background:var(--surface);color:var(--fg);box-shadow:0 1px 2px rgb(0 0 0 / .08)}
 
 .card{background:var(--surface);border-radius:var(--r);padding:14px}
@@ -144,41 +153,42 @@ label.lb{font-size:12px;color:var(--muted);font-weight:600;letter-spacing:.05em;
 </head><body>
 <div class="wrap">
   <div class="month">
-    <button class="icon-btn" id="prevM" aria-label="Предыдущий месяц">‹</button>
-    <h1 id="monthTitle">Ноябрь 2026</h1>
-    <button class="icon-btn" id="nextM" aria-label="Следующий месяц">›</button>
+    <button class="icon-btn" id="prevM" data-i18n-aria="prevMonth">‹</button>
+    <h1 id="monthTitle"></h1>
+    <button class="icon-btn" id="nextM" data-i18n-aria="nextMonth">›</button>
   </div>
 
-  <section class="balance" aria-label="Итоги месяца">
-    <div><small>Остаток за месяц</small><div class="big num" id="balVal">0</div></div>
+  <section class="balance">
+    <div><small data-i18n="balance"></small><div class="big num" id="balVal">0</div></div>
     <div class="split">
-      <div><span>Доходы</span><b class="num" id="incVal">0</b></div>
-      <div><span>Расходы</span><b class="num" id="expVal">0</b></div>
+      <div><span data-i18n="income"></span><b class="num" id="incVal">0</b></div>
+      <div><span data-i18n="expenses"></span><b class="num" id="expVal">0</b></div>
     </div>
   </section>
 
   <div class="banner" id="demoBanner" hidden>
-    <span>Сейчас показаны примеры записей, чтобы было видно, как всё работает.</span>
-    <button id="clearDemo">Очистить</button>
+    <span data-i18n="demo"></span>
+    <button id="clearDemo" data-i18n="clear"></button>
   </div>
 
   <div class="tabs" role="tablist">
-    <button role="tab" data-tab="overview" aria-selected="true">Обзор</button>
-    <button role="tab" data-tab="history" aria-selected="false">История</button>
-    <button role="tab" data-tab="cats" aria-selected="false">Категории</button>
+    <button role="tab" data-tab="overview" aria-selected="true" data-i18n="tabOverview"></button>
+    <button role="tab" data-tab="history" aria-selected="false" data-i18n="tabHistory"></button>
+    <button role="tab" data-tab="cats" aria-selected="false" data-i18n="tabCats"></button>
+    <button role="tab" data-tab="settings" aria-selected="false" data-i18n="tabSettings"></button>
   </div>
 
   <!-- Overview -->
   <section id="tab-overview" class="card">
-    <h2 class="h2">Куда уходят деньги</h2>
+    <h2 class="h2" data-i18n="whereMoney"></h2>
     <div class="donut-row">
-      <svg class="donut" id="donut" viewBox="0 0 42 42" role="img" aria-label="Доли категорий"></svg>
+      <svg class="donut" id="donut" viewBox="0 0 42 42" role="img"></svg>
       <div class="donut-total">
-        <span id="donutLbl">Расходы за месяц</span>
+        <span id="donutLbl"></span>
         <b class="num" id="donutSum">0</b>
         <div class="seg" id="ovType">
-          <button data-t="e" aria-pressed="true">Расходы</button>
-          <button data-t="i" aria-pressed="false">Доходы</button>
+          <button data-t="e" aria-pressed="true" data-i18n="expenses"></button>
+          <button data-t="i" aria-pressed="false" data-i18n="income"></button>
         </div>
       </div>
     </div>
@@ -188,10 +198,10 @@ label.lb{font-size:12px;color:var(--muted);font-weight:600;letter-spacing:.05em;
   <!-- History -->
   <section id="tab-history" hidden style="display:flex;flex-direction:column;gap:12px">
     <div class="filters">
-      <button class="chip" data-f="all" aria-pressed="true">Все</button>
-      <button class="chip" data-f="e" aria-pressed="false">Расходы</button>
-      <button class="chip" data-f="i" aria-pressed="false">Доходы</button>
-      <select id="catFilter" aria-label="Категория"></select>
+      <button class="chip" data-f="all" aria-pressed="true" data-i18n="all"></button>
+      <button class="chip" data-f="e" aria-pressed="false" data-i18n="expenses"></button>
+      <button class="chip" data-f="i" aria-pressed="false" data-i18n="income"></button>
+      <select id="catFilter" data-i18n-aria="allCats"></select>
     </div>
     <div id="histList" style="display:flex;flex-direction:column;gap:12px"></div>
   </section>
@@ -199,61 +209,66 @@ label.lb{font-size:12px;color:var(--muted);font-weight:600;letter-spacing:.05em;
   <!-- Categories -->
   <section id="tab-cats" hidden style="display:flex;flex-direction:column;gap:12px">
     <div class="card">
-      <h2 class="h2">Категории расходов</h2>
+      <h2 class="h2" data-i18n="catsExp"></h2>
       <div class="cat-list" id="catsE"></div>
     </div>
     <div class="card">
-      <h2 class="h2">Категории доходов</h2>
+      <h2 class="h2" data-i18n="catsInc"></h2>
       <div class="cat-list" id="catsI"></div>
     </div>
     <form class="card" id="catForm" style="display:flex;flex-direction:column;gap:10px">
-      <h2 class="h2" style="margin:0">Новая категория</h2>
+      <h2 class="h2" style="margin:0" data-i18n="newCat"></h2>
       <div class="row">
-        <input class="field" id="catEmoji" maxlength="4" placeholder="🍕" style="width:64px;text-align:center" aria-label="Значок">
-        <input class="field" id="catName" maxlength="30" placeholder="Название" style="flex:1" aria-label="Название категории">
+        <input class="field" id="catEmoji" maxlength="4" placeholder="🍕" style="width:64px;text-align:center" aria-label="Emoji">
+        <input class="field" id="catName" maxlength="30" style="flex:1" data-i18n-ph="catName" data-i18n-aria="catName">
       </div>
       <div class="row">
-        <select class="field" id="catType" style="flex:1" aria-label="Тип категории">
-          <option value="e">Для расходов</option>
-          <option value="i">Для доходов</option>
+        <select class="field" id="catType" style="flex:1">
+          <option value="e" data-i18n="forExp"></option>
+          <option value="i" data-i18n="forInc"></option>
         </select>
-        <button class="btn" type="submit">Добавить</button>
+        <button class="btn" type="submit" data-i18n="add"></button>
       </div>
     </form>
-    <div class="card" style="display:flex;flex-direction:column;gap:10px">
-      <h2 class="h2" style="margin:0">Валюта</h2>
-      <select class="field" id="curSel" aria-label="Валюта">
-        <option value="₸">Тенге, ₸</option>
-        <option value="₽">Рубль, ₽</option>
-        <option value="$">Доллар, $</option>
-        <option value="€">Евро, €</option>
-        <option value="сом">Сом</option>
-        <option value="сўм">Сум</option>
-      </select>
-      <span style="font-size:13px;color:var(--muted)" id="syncNote"></span>
+  </section>
+
+  <!-- Settings -->
+  <section id="tab-settings" hidden style="display:flex;flex-direction:column;gap:12px">
+    <div class="card">
+      <h2 class="h2" data-i18n="language"></h2>
+      <div class="cur-list" id="langList" role="radiogroup" data-i18n-aria="language"></div>
+    </div>
+    <div class="card">
+      <h2 class="h2" data-i18n="currency"></h2>
+      <div class="cur-list" id="curList" role="radiogroup" data-i18n-aria="currency"></div>
+      <p style="font-size:13px;color:var(--muted);margin:10px 0 0" data-i18n="curNote"></p>
+    </div>
+    <div class="card">
+      <h2 class="h2" data-i18n="storage"></h2>
+      <span style="font-size:14px;color:var(--muted)" id="syncNote"></span>
     </div>
   </section>
 </div>
 
-<button class="fab" id="fab" aria-label="Добавить запись"><b>+</b> Запись</button>
+<button class="fab" id="fab"><b>+</b> <span data-i18n="fab"></span></button>
 
 <div class="overlay" id="overlay" hidden></div>
 <form class="sheet" id="sheet" hidden autocomplete="off">
   <div class="sheet-in">
     <div class="grab"></div>
     <div class="type-toggle" id="txType">
-      <button type="button" data-t="e" aria-pressed="true">Расход</button>
-      <button type="button" data-t="i" aria-pressed="false">Доход</button>
+      <button type="button" data-t="e" aria-pressed="true" data-i18n="expense1"></button>
+      <button type="button" data-t="i" aria-pressed="false" data-i18n="income1"></button>
     </div>
-    <div class="amount"><input id="txAmount" inputmode="decimal" placeholder="0" aria-label="Сумма"><span id="txCur">₸</span></div>
+    <div class="amount"><input id="txAmount" inputmode="decimal" placeholder="0" data-i18n-aria="amount"><span id="txCur">₸</span></div>
     <div class="cat-grid" id="txCats"></div>
-    <label class="lb">Дата и время<input class="field" type="datetime-local" id="txDate"></label>
-    <label class="lb">Комментарий<input class="field" id="txNote" maxlength="80" placeholder="Необязательно"></label>
+    <label class="lb"><span data-i18n="dateTime"></span><input class="field" type="datetime-local" id="txDate"></label>
+    <label class="lb"><span data-i18n="note"></span><input class="field" id="txNote" maxlength="80" data-i18n-ph="optional"></label>
     <div class="err" id="txErr"></div>
     <div class="row">
-      <button type="button" class="btn danger" id="txDel" hidden>Удалить</button>
-      <button type="button" class="btn ghost" id="txCancel" style="flex:1">Отмена</button>
-      <button type="submit" class="btn" style="flex:2">Сохранить</button>
+      <button type="button" class="btn danger" id="txDel" hidden></button>
+      <button type="button" class="btn ghost" id="txCancel" style="flex:1" data-i18n="cancel"></button>
+      <button type="submit" class="btn" style="flex:2" data-i18n="save"></button>
     </div>
   </div>
 </form>
@@ -267,29 +282,121 @@ const LS_KEY = 'koshelek_v1';
 const PALETTE = ['#E0704F','#3E8FD6','#D9A12B','#8E6BD8','#2FA58A','#D45B8E','#6A9A3A','#4FB3C4','#B7744A','#7C8794','#C9584A','#5470C6'];
 const $ = id => document.getElementById(id);
 
+/* ---------- translations ---------- */
+const LANGS = [
+  { v:'ky', native:'Кыргызча', code:'KY', loc:'ky-KG' },
+  { v:'kk', native:'Қазақша', code:'KK', loc:'kk-KZ' },
+  { v:'ru', native:'Русский', code:'RU', loc:'ru-RU' },
+  { v:'en', native:'English', code:'EN', loc:'en-US' }
+];
+const I18N = {
+  ru: {
+    appName:'Кошелёк', prevMonth:'Предыдущий месяц', nextMonth:'Следующий месяц',
+    balance:'Остаток за месяц', income:'Доходы', expenses:'Расходы', income1:'Доход', expense1:'Расход',
+    demo:'Сейчас показаны примеры записей, чтобы было видно, как всё работает.', clear:'Очистить',
+    tabOverview:'Обзор', tabHistory:'История', tabCats:'Категории', tabSettings:'Настройки',
+    whereMoney:'Куда уходят деньги', expMonth:'Расходы за месяц', incMonth:'Доходы за месяц',
+    emptyE:'В этом месяце расходов пока нет.', emptyI:'В этом месяце доходов пока нет.', emptyHint:'Нажмите «+ {fab}», чтобы добавить первую.',
+    all:'Все', allCats:'Все категории', incTag:'доход', noEntries:'Записей за этот месяц нет.',
+    catsExp:'Категории расходов', catsInc:'Категории доходов', noCats:'Нет категорий', del:'Удалить', delSure:'Да, удалить',
+    newCat:'Новая категория', catName:'Название', forExp:'Для расходов', forInc:'Для доходов', add:'Добавить',
+    language:'Язык', currency:'Валюта', curNote:'Меняется только значок у сумм. Сами суммы не пересчитываются по курсу.',
+    storage:'Хранение данных', syncCloud:'Записи хранятся в облаке Telegram и доступны на всех ваших устройствах.', syncLocal:'Записи хранятся в этом браузере.',
+    fab:'Запись', amount:'Сумма', dateTime:'Дата и время', note:'Комментарий', optional:'Необязательно', cancel:'Отмена', save:'Сохранить',
+    errAmount:'Введите сумму больше нуля.', errCat:'Выберите категорию.',
+    saved:'Сохранено', updated:'Изменено', deleted:'Удалено', demoCleared:'Примеры удалены', catDeleted:'Категория удалена', catAdded:'Категория добавлена',
+    noCat:'Без категории',
+    cur:{ 'сом':['Сом','Кыргызстан'], '₸':['Тенге','Казахстан'], '$':['Доллар','США'], '₽':['Рубль','Россия'] },
+    cats:{ food:'Продукты', cafe:'Кафе и рестораны', taxi:'Транспорт', home:'Жильё и коммуналка', phone:'Связь и интернет', health:'Здоровье', clothes:'Одежда', fun:'Развлечения', gift_e:'Подарки', other_e:'Другое', salary:'Зарплата', side:'Подработка', gift_i:'Подарки', cash:'Кэшбэк и проценты', other_i:'Другое' }
+  },
+  ky: {
+    appName:'Капчык', prevMonth:'Мурунку ай', nextMonth:'Кийинки ай',
+    balance:'Айдын калдыгы', income:'Кирешелер', expenses:'Чыгашалар', income1:'Киреше', expense1:'Чыгаша',
+    demo:'Азыр кантип иштээрин көрсөтүү үчүн мисал жазуулар турат.', clear:'Тазалоо',
+    tabOverview:'Жалпы', tabHistory:'Тарых', tabCats:'Категориялар', tabSettings:'Жөндөөлөр',
+    whereMoney:'Акча кайда кетет', expMonth:'Айдагы чыгашалар', incMonth:'Айдагы кирешелер',
+    emptyE:'Бул айда чыгашалар али жок.', emptyI:'Бул айда кирешелер али жок.', emptyHint:'Биринчисин кошуу үчүн «+ {fab}» басыңыз.',
+    all:'Баары', allCats:'Бардык категориялар', incTag:'киреше', noEntries:'Бул айда жазуулар жок.',
+    catsExp:'Чыгаша категориялары', catsInc:'Киреше категориялары', noCats:'Категориялар жок', del:'Өчүрүү', delSure:'Ооба, өчүрүү',
+    newCat:'Жаңы категория', catName:'Аталышы', forExp:'Чыгашалар үчүн', forInc:'Кирешелер үчүн', add:'Кошуу',
+    language:'Тил', currency:'Валюта', curNote:'Суммалардын белгиси гана өзгөрөт. Суммалар курс боюнча кайра эсептелбейт.',
+    storage:'Маалыматтарды сактоо', syncCloud:'Жазуулар Telegram булутунда сакталат жана бардык түзмөктөрүңүздө жеткиликтүү.', syncLocal:'Жазуулар ушул браузерде сакталат.',
+    fab:'Жазуу', amount:'Сумма', dateTime:'Күнү жана убактысы', note:'Эскертүү', optional:'Милдеттүү эмес', cancel:'Жокко чыгаруу', save:'Сактоо',
+    errAmount:'Нөлдөн чоң сумма жазыңыз.', errCat:'Категорияны тандаңыз.',
+    saved:'Сакталды', updated:'Өзгөртүлдү', deleted:'Өчүрүлдү', demoCleared:'Мисалдар өчүрүлдү', catDeleted:'Категория өчүрүлдү', catAdded:'Категория кошулду',
+    noCat:'Категориясыз',
+    cur:{ 'сом':['Сом','Кыргызстан'], '₸':['Теңге','Казакстан'], '$':['Доллар','АКШ'], '₽':['Рубль','Россия'] },
+    cats:{ food:'Азык-түлүк', cafe:'Кафе жана ресторандар', taxi:'Транспорт', home:'Турак жай жана коммуналдык', phone:'Байланыш жана интернет', health:'Ден соолук', clothes:'Кийим', fun:'Көңүл ачуу', gift_e:'Белектер', other_e:'Башка', salary:'Айлык', side:'Кошумча иш', gift_i:'Белектер', cash:'Кэшбэк жана пайыздар', other_i:'Башка' }
+  },
+  kk: {
+    appName:'Әмиян', prevMonth:'Алдыңғы ай', nextMonth:'Келесі ай',
+    balance:'Айдағы қалдық', income:'Кірістер', expenses:'Шығыстар', income1:'Кіріс', expense1:'Шығыс',
+    demo:'Қазір қалай жұмыс істейтінін көрсету үшін мысал жазбалар тұр.', clear:'Тазалау',
+    tabOverview:'Шолу', tabHistory:'Тарих', tabCats:'Санаттар', tabSettings:'Баптаулар',
+    whereMoney:'Ақша қайда кетеді', expMonth:'Айдағы шығыстар', incMonth:'Айдағы кірістер',
+    emptyE:'Бұл айда шығыстар әлі жоқ.', emptyI:'Бұл айда кірістер әлі жоқ.', emptyHint:'Біріншісін қосу үшін «+ {fab}» басыңыз.',
+    all:'Барлығы', allCats:'Барлық санаттар', incTag:'кіріс', noEntries:'Бұл айда жазбалар жоқ.',
+    catsExp:'Шығыс санаттары', catsInc:'Кіріс санаттары', noCats:'Санаттар жоқ', del:'Жою', delSure:'Иә, жою',
+    newCat:'Жаңа санат', catName:'Атауы', forExp:'Шығыстар үшін', forInc:'Кірістер үшін', add:'Қосу',
+    language:'Тіл', currency:'Валюта', curNote:'Сомалардың белгісі ғана өзгереді. Сомалар бағам бойынша қайта есептелмейді.',
+    storage:'Деректерді сақтау', syncCloud:'Жазбалар Telegram бұлтында сақталады және барлық құрылғыларыңызда қолжетімді.', syncLocal:'Жазбалар осы браузерде сақталады.',
+    fab:'Жазба', amount:'Сома', dateTime:'Күні мен уақыты', note:'Түсініктеме', optional:'Міндетті емес', cancel:'Болдырмау', save:'Сақтау',
+    errAmount:'Нөлден үлкен соманы енгізіңіз.', errCat:'Санатты таңдаңыз.',
+    saved:'Сақталды', updated:'Өзгертілді', deleted:'Жойылды', demoCleared:'Мысалдар жойылды', catDeleted:'Санат жойылды', catAdded:'Санат қосылды',
+    noCat:'Санатсыз',
+    cur:{ 'сом':['Сом','Қырғызстан'], '₸':['Теңге','Қазақстан'], '$':['Доллар','АҚШ'], '₽':['Рубль','Ресей'] },
+    cats:{ food:'Азық-түлік', cafe:'Кафе мен мейрамханалар', taxi:'Көлік', home:'Тұрғын үй және коммуналдық', phone:'Байланыс және интернет', health:'Денсаулық', clothes:'Киім', fun:'Ойын-сауық', gift_e:'Сыйлықтар', other_e:'Басқа', salary:'Жалақы', side:'Қосымша жұмыс', gift_i:'Сыйлықтар', cash:'Кэшбэк және пайыздар', other_i:'Басқа' }
+  },
+  en: {
+    appName:'Wallet', prevMonth:'Previous month', nextMonth:'Next month',
+    balance:'Left this month', income:'Income', expenses:'Expenses', income1:'Income', expense1:'Expense',
+    demo:'These are sample entries so you can see how it works.', clear:'Clear',
+    tabOverview:'Overview', tabHistory:'History', tabCats:'Categories', tabSettings:'Settings',
+    whereMoney:'Where the money goes', expMonth:'Expenses this month', incMonth:'Income this month',
+    emptyE:'No expenses this month yet.', emptyI:'No income this month yet.', emptyHint:'Tap “+ {fab}” to add the first one.',
+    all:'All', allCats:'All categories', incTag:'income', noEntries:'No entries this month.',
+    catsExp:'Expense categories', catsInc:'Income categories', noCats:'No categories', del:'Delete', delSure:'Yes, delete',
+    newCat:'New category', catName:'Name', forExp:'For expenses', forInc:'For income', add:'Add',
+    language:'Language', currency:'Currency', curNote:'Only the symbol changes. Amounts are not converted.',
+    storage:'Data storage', syncCloud:'Entries are stored in Telegram’s cloud and available on all your devices.', syncLocal:'Entries are stored in this browser.',
+    fab:'Entry', amount:'Amount', dateTime:'Date and time', note:'Note', optional:'Optional', cancel:'Cancel', save:'Save',
+    errAmount:'Enter an amount greater than zero.', errCat:'Choose a category.',
+    saved:'Saved', updated:'Updated', deleted:'Deleted', demoCleared:'Samples cleared', catDeleted:'Category deleted', catAdded:'Category added',
+    noCat:'Uncategorized',
+    cur:{ 'сом':['Som','Kyrgyzstan'], '₸':['Tenge','Kazakhstan'], '$':['Dollar','USA'], '₽':['Ruble','Russia'] },
+    cats:{ food:'Groceries', cafe:'Cafés & restaurants', taxi:'Transport', home:'Housing & utilities', phone:'Phone & internet', health:'Health', clothes:'Clothes', fun:'Entertainment', gift_e:'Gifts', other_e:'Other', salary:'Salary', side:'Side job', gift_i:'Gifts', cash:'Cashback & interest', other_i:'Other' }
+  }
+};
+const CURRENCIES = [
+  { v:'сом', code:'KGS' }, { v:'₸', code:'KZT' }, { v:'$', code:'USD' }, { v:'₽', code:'RUB' }
+];
+function detectLang(){
+  let code = '';
+  try { code = (tg && tg.initDataUnsafe && tg.initDataUnsafe.user && tg.initDataUnsafe.user.language_code) || navigator.language || ''; } catch(e){}
+  code = code.slice(0, 2).toLowerCase();
+  return I18N[code] ? code : 'ru';
+}
+let T = I18N.ru, LOC = 'ru-RU';
+
 const DEFAULT_CATS = [
-  ['food','e','🛒','Продукты'],['cafe','e','☕','Кафе и рестораны'],['taxi','e','🚕','Транспорт'],
-  ['home','e','🏠','Жильё и коммуналка'],['phone','e','📱','Связь и интернет'],['health','e','💊','Здоровье'],
-  ['clothes','e','👕','Одежда'],['fun','e','🎬','Развлечения'],['gift_e','e','🎁','Подарки'],['other_e','e','📦','Другое'],
-  ['salary','i','💼','Зарплата'],['side','i','🧰','Подработка'],['gift_i','i','🎁','Подарки'],['cash','i','💳','Кэшбэк и проценты'],['other_i','i','📦','Другое']
-].map(([id,t,em,name],k)=>({id,t,em,name,col:PALETTE[k % PALETTE.length]}));
+  ['food','e','🛒'],['cafe','e','☕'],['taxi','e','🚕'],['home','e','🏠'],['phone','e','📱'],['health','e','💊'],
+  ['clothes','e','👕'],['fun','e','🎬'],['gift_e','e','🎁'],['other_e','e','📦'],
+  ['salary','i','💼'],['side','i','🧰'],['gift_i','i','🎁'],['cash','i','💳'],['other_i','i','📦']
+].map(([id,t,em],k)=>({id,t,em,name:'',col:PALETTE[k % PALETTE.length]}));
 
 function sampleTx(){
   const now = new Date(), y = now.getFullYear(), m = now.getMonth(), today = now.getDate();
   const at = (mo, d, h) => new Date(y, m + mo, Math.min(d, mo ? 28 : today), h, (d*7)%60).getTime();
   const rows = [
-    [0,5,10,'i',450000,'salary','Зарплата за месяц'],[0,1,19,'i',60000,'side','Заказ на сайт'],
-    [0,2,9,'e',120000,'home','Аренда'],[0,3,18,'e',18400,'food','Магазин у дома'],[0,6,13,'e',4200,'cafe','Обед'],
-    [0,8,8,'e',2600,'taxi',''],[0,10,20,'e',23900,'food','Закупка на неделю'],[0,12,15,'e',6500,'phone','Мобильный + интернет'],
-    [0,14,19,'e',9800,'fun','Кино'],[0,16,12,'e',14300,'health','Аптека'],[0,18,18,'e',31500,'clothes','Куртка, распродажа'],
-    [0,20,9,'e',3100,'taxi',''],[0,22,14,'e',7800,'cafe','Кофе с друзьями'],[0,23,17,'e',16700,'food',''],[0,24,11,'i',3400,'cash','Кэшбэк по карте'],
-    [-1,5,10,'i',450000,'salary','Зарплата за месяц'],[-1,2,9,'e',120000,'home','Аренда'],[-1,9,18,'e',41200,'food',''],
-    [-1,15,20,'e',12000,'gift_e','Подарок маме'],[-1,21,13,'e',8900,'cafe',''],[-1,25,8,'e',5400,'taxi','']
+    [0,5,10,'i',450000,'salary'],[0,1,19,'i',60000,'side'],[0,2,9,'e',120000,'home'],[0,3,18,'e',18400,'food'],[0,6,13,'e',4200,'cafe'],
+    [0,8,8,'e',2600,'taxi'],[0,10,20,'e',23900,'food'],[0,12,15,'e',6500,'phone'],[0,14,19,'e',9800,'fun'],[0,16,12,'e',14300,'health'],
+    [0,18,18,'e',31500,'clothes'],[0,20,9,'e',3100,'taxi'],[0,22,14,'e',7800,'cafe'],[0,23,17,'e',16700,'food'],[0,24,11,'i',3400,'cash'],
+    [-1,5,10,'i',450000,'salary'],[-1,2,9,'e',120000,'home'],[-1,9,18,'e',41200,'food'],[-1,15,20,'e',12000,'gift_e'],[-1,21,13,'e',8900,'cafe'],[-1,25,8,'e',5400,'taxi']
   ];
-  return rows.map(([mo,d,h,t,a,c,n],k)=>({id:'s'+k,t,a,c,d:at(mo,d,h),n}));
+  return rows.map(([mo,d,h,t,a,c],k)=>({id:'s'+k,t,a,c,d:at(mo,d,h),n:''}));
 }
 
-let S = { v:1, cur:'₸', demo:true, cats:DEFAULT_CATS, tx:sampleTx() };
+let S = { v:1, cur:'сом', lang:'', demo:true, cats:DEFAULT_CATS, tx:sampleTx() };
 let view = { y:new Date().getFullYear(), m:new Date().getMonth(), tab:'overview', ovType:'e', hf:'all', hc:'' };
 
 /* ---------- storage ---------- */
@@ -331,9 +438,10 @@ function save(){
 }
 
 /* ---------- helpers ---------- */
-const nf = new Intl.NumberFormat('ru-RU', { maximumFractionDigits: 2 });
+let nf = new Intl.NumberFormat('ru-RU', { maximumFractionDigits: 2 });
 const money = (n, sign) => (sign ? (sign === 'i' ? '+' : '−') : '') + nf.format(n) + ' ' + S.cur;
-const cat = id => S.cats.find(c => c.id === id) || { em:'❔', name:'Без категории', col:'#888', t:'e' };
+const catName = c => (T.cats[c.id] && !c.name) ? T.cats[c.id] : (c.name || T.cats[c.id] || '');
+const cat = id => S.cats.find(c => c.id === id) || { id:'', em:'❔', name:T.noCat, col:'#888', t:'e' };
 const inMonth = t => { const d = new Date(t.d); return d.getFullYear() === view.y && d.getMonth() === view.m; };
 const monthTx = () => S.tx.filter(inMonth);
 const toInput = ts => { const d = new Date(ts); d.setMinutes(d.getMinutes() - d.getTimezoneOffset()); return d.toISOString().slice(0,16); };
@@ -341,11 +449,26 @@ const tint = c => `color-mix(in srgb, ${c} 20%, var(--surface))`;
 function toast(msg){ const t = $('toast'); t.textContent = msg; t.hidden = false; clearTimeout(toast.h); toast.h = setTimeout(() => t.hidden = true, 1800); }
 function haptic(kind){ try { tg && tg.HapticFeedback && tg.HapticFeedback.notificationOccurred(kind); } catch(e){} }
 function esc(s){ return String(s).replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch])); }
+function fmtDate(ts, opts){ try { return new Date(ts).toLocaleDateString(LOC, opts); } catch(e){ return new Date(ts).toLocaleDateString('ru-RU', opts); } }
+function fmtTime(ts){ try { return new Date(ts).toLocaleTimeString(LOC, { hour:'2-digit', minute:'2-digit', hour12:false }); } catch(e){ return new Date(ts).toLocaleTimeString('ru-RU', { hour:'2-digit', minute:'2-digit' }); } }
+
+function setLang(code){
+  T = I18N[code] || I18N.ru;
+  LOC = (LANGS.find(l => l.v === code) || LANGS[2]).loc;
+  try { nf = new Intl.NumberFormat(LOC, { maximumFractionDigits: 2 }); } catch(e){ nf = new Intl.NumberFormat('ru-RU', { maximumFractionDigits: 2 }); }
+  document.documentElement.lang = code;
+  document.title = T.appName;
+  document.querySelectorAll('[data-i18n]').forEach(el => el.textContent = T[el.dataset.i18n]);
+  document.querySelectorAll('[data-i18n-ph]').forEach(el => el.placeholder = T[el.dataset.i18nPh]);
+  document.querySelectorAll('[data-i18n-aria]').forEach(el => el.setAttribute('aria-label', T[el.dataset.i18nAria]));
+  $('fab').setAttribute('aria-label', '+ ' + T.fab);
+}
 
 /* ---------- render ---------- */
 function render(){
-  const title = new Date(view.y, view.m, 1).toLocaleDateString('ru-RU', { month:'long', year:'numeric' }).replace(' г.', '');
-  $('monthTitle').textContent = title;
+  let mName = fmtDate(new Date(view.y, view.m, 1), { month:'long' });
+  if (/^\d/.test(mName)) mName = fmtDate(new Date(view.y, view.m, 1), { month:'long', year:'numeric' }); else mName += ' ' + view.y;
+  $('monthTitle').textContent = mName;
   const mt = monthTx();
   const inc = mt.filter(t => t.t === 'i').reduce((s, t) => s + t.a, 0);
   const exp = mt.filter(t => t.t === 'e').reduce((s, t) => s + t.a, 0);
@@ -354,12 +477,12 @@ function render(){
   $('expVal').textContent = money(exp);
   $('demoBanner').hidden = !S.demo;
   $('txCur').textContent = S.cur;
-  $('curSel').value = S.cur;
   document.querySelectorAll('.tabs button').forEach(b => b.setAttribute('aria-selected', b.dataset.tab === view.tab));
-  ['overview','history','cats'].forEach(k => $('tab-' + k).hidden = view.tab !== k);
+  ['overview','history','cats','settings'].forEach(k => $('tab-' + k).hidden = view.tab !== k);
   if (view.tab === 'overview') renderOverview(mt);
   if (view.tab === 'history') renderHistory(mt);
   if (view.tab === 'cats') renderCats();
+  if (view.tab === 'settings') renderSettings();
 }
 
 function renderOverview(mt){
@@ -369,9 +492,8 @@ function renderOverview(mt){
   mt.filter(x => x.t === t).forEach(x => by[x.c] = (by[x.c] || 0) + x.a);
   const rows = Object.entries(by).map(([c, a]) => ({ c: cat(c), id: c, a })).sort((a, b) => b.a - a.a);
   const total = rows.reduce((s, r) => s + r.a, 0);
-  $('donutLbl').textContent = t === 'e' ? 'Расходы за месяц' : 'Доходы за месяц';
+  $('donutLbl').textContent = t === 'e' ? T.expMonth : T.incMonth;
   $('donutSum').textContent = money(total);
-  // donut: r = 15.915 → circumference 100
   let off = 25, svg = '<circle cx="21" cy="21" r="15.915" fill="none" stroke="var(--sunk)" stroke-width="6"></circle>';
   if (total > 0) rows.forEach(r => {
     const p = r.a / total * 100;
@@ -382,11 +504,11 @@ function renderOverview(mt){
   $('bars').innerHTML = rows.length ? rows.map(r => `
     <button class="bar-row" data-cat="${r.id}" data-t="${t}" type="button">
       <span class="ic" style="background:${tint(r.c.col)}">${r.c.em}</span>
-      <span class="nm">${esc(r.c.name)}</span>
+      <span class="nm">${esc(catName(r.c))}</span>
       <span class="am num">${money(r.a)}<span class="pc">${Math.round(r.a / total * 100)}%</span></span>
       <span class="track"><span class="fill" style="display:block;width:${r.a / rows[0].a * 100}%;background:${r.c.col}"></span></span>
     </button>`).join('')
-    : `<div class="empty">В этом месяце ${t === 'e' ? 'расходов' : 'доходов'} пока нет.<br>Нажмите «+ Запись», чтобы добавить первую.</div>`;
+    : `<div class="empty">${t === 'e' ? T.emptyE : T.emptyI}<br>${T.emptyHint.replace('{fab}', T.fab)}</div>`;
 }
 
 function renderHistory(mt){
@@ -394,10 +516,10 @@ function renderHistory(mt){
   const sel = $('catFilter');
   const avail = S.cats.filter(c => view.hf === 'all' || c.t === view.hf);
   if (view.hc && !avail.some(c => c.id === view.hc)) view.hc = '';
-  sel.innerHTML = '<option value="">Все категории</option>' + avail.map(c => `<option value="${c.id}">${c.em} ${esc(c.name)}${view.hf === 'all' ? (c.t === 'i' ? ' (доход)' : '') : ''}</option>`).join('');
+  sel.innerHTML = `<option value="">${T.allCats}</option>` + avail.map(c => `<option value="${c.id}">${c.em} ${esc(catName(c))}${view.hf === 'all' && c.t === 'i' ? ' (' + T.incTag + ')' : ''}</option>`).join('');
   sel.value = view.hc;
   const list = mt.filter(x => (view.hf === 'all' || x.t === view.hf) && (!view.hc || x.c === view.hc)).sort((a, b) => b.d - a.d);
-  if (!list.length) { $('histList').innerHTML = '<div class="card empty">Записей за этот месяц нет.</div>'; return; }
+  if (!list.length) { $('histList').innerHTML = `<div class="card empty">${T.noEntries}</div>`; return; }
   const groups = [];
   list.forEach(x => {
     const key = new Date(x.d).toDateString();
@@ -407,34 +529,45 @@ function renderHistory(mt){
   });
   $('histList').innerHTML = groups.map(g => {
     const net = g.items.reduce((s, x) => s + (x.t === 'i' ? x.a : -x.a), 0);
-    const dl = new Date(g.d).toLocaleDateString('ru-RU', { day:'numeric', month:'long', weekday:'long' });
+    const dl = fmtDate(g.d, { day:'numeric', month:'long', weekday:'long' });
     return `<div class="day"><div class="day-h"><span>${dl}</span><span class="num">${net >= 0 ? '+' : '−'}${nf.format(Math.abs(net))} ${S.cur}</span></div><div class="card">` +
       g.items.map(x => {
         const c = cat(x.c);
-        const time = new Date(x.d).toLocaleTimeString('ru-RU', { hour:'2-digit', minute:'2-digit' });
         return `<button class="tx" type="button" data-id="${x.id}">
           <span class="ic" style="background:${tint(c.col)}">${c.em}</span>
-          <span class="nm">${esc(c.name)}</span>
+          <span class="nm">${esc(catName(c))}</span>
           <span class="am num ${x.t}">${money(x.a, x.t)}</span>
-          <span class="sub">${time}${x.n ? ' · ' + esc(x.n) : ''}</span>
+          <span class="sub">${fmtTime(x.d)}${x.n ? ' · ' + esc(x.n) : ''}</span>
         </button>`;
       }).join('') + '</div></div>';
   }).join('');
 }
 
 function renderCats(){
-  const item = c => {
-    const used = S.tx.some(x => x.c === c.id);
-    return `<div class="cat-item"><span class="ic" style="background:${tint(c.col)}">${c.em}</span><span>${esc(c.name)}</span>
-      <button class="del" type="button" data-del="${c.id}" title="${used ? 'Записи останутся, но без категории' : ''}">Удалить</button></div>`;
-  };
-  $('catsE').innerHTML = S.cats.filter(c => c.t === 'e').map(item).join('') || '<div class="empty">Нет категорий</div>';
-  $('catsI').innerHTML = S.cats.filter(c => c.t === 'i').map(item).join('') || '<div class="empty">Нет категорий</div>';
-  $('syncNote').textContent = cloud ? 'Данные хранятся в облаке Telegram и доступны на всех ваших устройствах.' : 'Данные хранятся в этом браузере.';
+  const item = c => `<div class="cat-item"><span class="ic" style="background:${tint(c.col)}">${c.em}</span><span>${esc(catName(c))}</span>
+      <button class="del" type="button" data-del="${c.id}">${T.del}</button></div>`;
+  $('catsE').innerHTML = S.cats.filter(c => c.t === 'e').map(item).join('') || `<div class="empty">${T.noCats}</div>`;
+  $('catsI').innerHTML = S.cats.filter(c => c.t === 'i').map(item).join('') || `<div class="empty">${T.noCats}</div>`;
+}
+
+function renderSettings(){
+  $('langList').innerHTML = LANGS.map(l => `
+    <button type="button" class="cur-opt" role="radio" data-lang="${l.v}" aria-checked="${S.lang === l.v}">
+      <span class="sym">${l.code}</span>
+      <span><b>${l.native}</b></span>
+      <span class="chk">✓</span>
+    </button>`).join('');
+  $('curList').innerHTML = CURRENCIES.map(c => `
+    <button type="button" class="cur-opt" role="radio" data-cur="${c.v}" aria-checked="${S.cur === c.v}">
+      <span class="sym">${c.v}</span>
+      <span><b>${T.cur[c.v][0]}</b><small>${c.code} · ${T.cur[c.v][1]}</small></span>
+      <span class="chk">✓</span>
+    </button>`).join('');
+  $('syncNote').textContent = cloud ? T.syncCloud : T.syncLocal;
 }
 
 /* ---------- entry sheet ---------- */
-let edit = null; // {id?, t, c}
+let edit = null;
 function openSheet(tx){
   edit = tx ? { ...tx } : { t: view.ovType, c: '', d: Date.now(), a: '', n: '' };
   if (!tx) { const now = new Date(); if (now.getFullYear() !== view.y || now.getMonth() !== view.m) edit.d = new Date(view.y, view.m, 15, 12, 0).getTime(); }
@@ -442,7 +575,7 @@ function openSheet(tx){
   $('txDate').value = toInput(edit.d);
   $('txNote').value = edit.n || '';
   $('txErr').textContent = '';
-  $('txDel').hidden = !tx; $('txDel').textContent = 'Удалить'; $('txDel').dataset.armed = '';
+  $('txDel').hidden = !tx; $('txDel').textContent = T.del; $('txDel').dataset.armed = '';
   sheetType();
   $('overlay').hidden = false; $('sheet').hidden = false;
   if (!tx) setTimeout(() => $('txAmount').focus(), 60);
@@ -453,25 +586,26 @@ function sheetType(){
   document.querySelectorAll('#txType button').forEach(b => b.setAttribute('aria-pressed', b.dataset.t === edit.t));
   const cs = S.cats.filter(c => c.t === edit.t);
   if (!cs.some(c => c.id === edit.c)) edit.c = '';
-  $('txCats').innerHTML = cs.map(c => `<button type="button" data-c="${c.id}" aria-pressed="${c.id === edit.c}"><span>${c.em}</span><span>${esc(c.name)}</span></button>`).join('');
+  $('txCats').innerHTML = cs.map(c => `<button type="button" data-c="${c.id}" aria-pressed="${c.id === edit.c}"><span>${c.em}</span><span>${esc(catName(c))}</span></button>`).join('');
 }
 $('txType').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; edit.t = b.dataset.t; sheetType(); });
 $('txCats').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; edit.c = b.dataset.c; sheetType(); $('txErr').textContent = ''; });
 $('sheet').addEventListener('submit', e => {
   e.preventDefault();
   const a = parseFloat($('txAmount').value.replace(/\s/g, '').replace(',', '.'));
-  if (!(a > 0)) { $('txErr').textContent = 'Введите сумму больше нуля.'; $('txAmount').focus(); haptic('error'); return; }
-  if (!edit.c) { $('txErr').textContent = 'Выберите категорию.'; haptic('error'); return; }
+  if (!(a > 0)) { $('txErr').textContent = T.errAmount; $('txAmount').focus(); haptic('error'); return; }
+  if (!edit.c) { $('txErr').textContent = T.errCat; haptic('error'); return; }
   const d = $('txDate').value ? new Date($('txDate').value).getTime() : Date.now();
   const rec = { id: edit.id || Date.now().toString(36) + Math.random().toString(36).slice(2, 6), t: edit.t, a: Math.round(a * 100) / 100, c: edit.c, d, n: $('txNote').value.trim() };
-  if (edit.id) S.tx = S.tx.map(x => x.id === edit.id ? rec : x); else S.tx.push(rec);
+  const wasEdit = !!edit.id;
+  if (wasEdit) S.tx = S.tx.map(x => x.id === edit.id ? rec : x); else S.tx.push(rec);
   const dd = new Date(d); view.y = dd.getFullYear(); view.m = dd.getMonth();
-  const wasEdit = !!edit.id; save(); closeSheet(); render(); haptic('success'); toast(wasEdit ? 'Изменено' : 'Сохранено');
+  save(); closeSheet(); render(); haptic('success'); toast(wasEdit ? T.updated : T.saved);
 });
 $('txDel').addEventListener('click', () => {
   const b = $('txDel');
-  if (!b.dataset.armed) { b.dataset.armed = '1'; b.textContent = 'Точно удалить?'; return; }
-  S.tx = S.tx.filter(x => x.id !== edit.id); save(); closeSheet(); render(); toast('Удалено');
+  if (!b.dataset.armed) { b.dataset.armed = '1'; b.textContent = T.delSure; return; }
+  S.tx = S.tx.filter(x => x.id !== edit.id); save(); closeSheet(); render(); toast(T.deleted);
 });
 $('txCancel').addEventListener('click', closeSheet);
 $('overlay').addEventListener('click', closeSheet);
@@ -486,12 +620,21 @@ $('bars').addEventListener('click', e => { const b = e.target.closest('.bar-row'
 document.querySelector('.filters').addEventListener('click', e => { const b = e.target.closest('.chip'); if (b) { view.hf = b.dataset.f; render(); } });
 $('catFilter').addEventListener('change', e => { view.hc = e.target.value; render(); });
 $('histList').addEventListener('click', e => { const b = e.target.closest('.tx'); if (b) openSheet(S.tx.find(x => x.id === b.dataset.id)); });
-$('clearDemo').addEventListener('click', () => { S.tx = []; S.demo = false; save(); render(); toast('Примеры удалены'); });
-$('curSel').addEventListener('change', e => { S.cur = e.target.value; save(); render(); });
+$('clearDemo').addEventListener('click', () => { S.tx = []; S.demo = false; save(); render(); toast(T.demoCleared); });
+$('curList').addEventListener('click', e => {
+  const b = e.target.closest('[data-cur]'); if (!b || b.dataset.cur === S.cur) return;
+  S.cur = b.dataset.cur; save(); render(); haptic('success');
+  toast(T.currency + ': ' + T.cur[S.cur][0]);
+});
+$('langList').addEventListener('click', e => {
+  const b = e.target.closest('[data-lang]'); if (!b || b.dataset.lang === S.lang) return;
+  S.lang = b.dataset.lang; setLang(S.lang); save(); render(); haptic('success');
+  toast(LANGS.find(l => l.v === S.lang).native);
+});
 document.querySelector('#tab-cats').addEventListener('click', e => {
   const b = e.target.closest('[data-del]'); if (!b) return;
-  if (!b.classList.contains('armed')) { b.classList.add('armed'); b.textContent = 'Точно?'; return; }
-  S.cats = S.cats.filter(c => c.id !== b.dataset.del); save(); render(); toast('Категория удалена');
+  if (!b.classList.contains('armed')) { b.classList.add('armed'); b.textContent = T.delSure; return; }
+  S.cats = S.cats.filter(c => c.id !== b.dataset.del); save(); render(); toast(T.catDeleted);
 });
 $('catForm').addEventListener('submit', e => {
   e.preventDefault();
@@ -499,20 +642,27 @@ $('catForm').addEventListener('submit', e => {
   const used = new Set(S.cats.map(c => c.col));
   S.cats.push({ id: 'c' + Date.now().toString(36), t: $('catType').value, em: $('catEmoji').value.trim() || '🏷️', name, col: PALETTE.find(p => !used.has(p)) || PALETTE[S.cats.length % PALETTE.length] });
   $('catName').value = ''; $('catEmoji').value = '';
-  save(); render(); toast('Категория добавлена');
+  save(); render(); toast(T.catAdded);
 });
 
 /* ---------- boot ---------- */
+const DEFAULT_RU = I18N.ru.cats;
+function adopt(data){
+  if (!data || !data.v) return false;
+  // older saves stored Russian names for built-in categories; clear them so they translate
+  (data.cats || []).forEach(c => { if (DEFAULT_RU[c.id] && c.name === DEFAULT_RU[c.id]) c.name = ''; });
+  if (!data.lang) data.lang = detectLang();
+  S = data; setLang(S.lang); return true;
+}
 if (tg) {
   tg.ready(); tg.expand();
   document.documentElement.setAttribute('data-theme', tg.colorScheme === 'dark' ? 'dark' : 'light');
   tg.onEvent && tg.onEvent('themeChanged', () => document.documentElement.setAttribute('data-theme', tg.colorScheme === 'dark' ? 'dark' : 'light'));
   tg.BackButton && tg.BackButton.onClick(closeSheet);
 }
-const local = lsGet();
-if (local && local.v) S = local;
+if (!adopt(lsGet())) { S.lang = detectLang(); if (S.lang === 'kk') S.cur = '₸'; else if (S.lang === 'ru') S.cur = '₽'; else if (S.lang === 'en') S.cur = '$'; setLang(S.lang); }
 render();
-cloudLoad().then(remote => { if (remote && remote.v) { S = remote; lsSet(JSON.stringify(S)); render(); } });
+cloudLoad().then(remote => { if (adopt(remote)) { lsSet(JSON.stringify(S)); render(); } });
 })();
 </script>
 
