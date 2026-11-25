@@ -4,7 +4,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1">
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <style>[hidden]{display:none!important}body{margin:0}</style>
-<title>Кошелёк</title>
+<title>Delta</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&family=Unbounded:wght@400;500;600&display=swap">
@@ -463,7 +463,7 @@ svg{display:block}
 const tg = window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initData !== undefined ? window.Telegram.WebApp : null;
 const cloud = tg && tg.CloudStorage && tg.isVersionAtLeast && tg.isVersionAtLeast('6.9') ? tg.CloudStorage : null;
 const tgUser = (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) || null;
-const LS_KEY = 'koshelek_v1';
+const LS_KEY = 'koshelek_v1'; // storage key kept so saved data stays
 const PALETTE = ['#E4CCFF','#C79BFF','#A35BF5','#8B3CF0','#7A2EE0','#6A2FD0','#B98AF7','#D6B4FF','#9256F2','#5B21D6','#F0E2FF','#7F4BD9'];
 const $ = id => document.getElementById(id);
 
@@ -475,7 +475,7 @@ const LANGS = [
 ];
 const I18N = {
   ru: {
-    appName:'Кошелёк', finance:'Финансы', analytics:'Аналитика', profile:'Профиль', hello:'Привет, {name}', guest:'гость',
+    appName:'Delta', finance:'Финансы', analytics:'Аналитика', profile:'Профиль', hello:'Привет, {name}', guest:'гость',
     prevMonth:'Предыдущий месяц', nextMonth:'Следующий месяц', chooseMonth:'Выбрать месяц', prevYear:'Предыдущий год', nextYear:'Следующий год',
     heroLbl:'Остаток · {month}', spentShare:'Потрачено {p}% дохода', noIncomeMeter:'Доходов за месяц пока нет',
     income:'Доходы', expenses:'Расходы', income1:'Доход', expense1:'Расход', calendar:'Календарь',
@@ -501,7 +501,7 @@ const I18N = {
     cats:{ food:'Продукты', cafe:'Кафе и рестораны', taxi:'Транспорт', home:'Жильё и коммуналка', phone:'Связь и интернет', health:'Здоровье', clothes:'Одежда', fun:'Развлечения', gift_e:'Подарки', other_e:'Другое', salary:'Зарплата', side:'Подработка', gift_i:'Подарки', cash:'Кэшбэк и проценты', other_i:'Другое' }
   },
   ky: {
-    appName:'Капчык', finance:'Каржы', analytics:'Аналитика', profile:'Профиль', hello:'Салам, {name}', guest:'конок',
+    appName:'Delta', finance:'Каржы', analytics:'Аналитика', profile:'Профиль', hello:'Салам, {name}', guest:'конок',
     prevMonth:'Мурунку ай', nextMonth:'Кийинки ай', chooseMonth:'Айды тандоо', prevYear:'Мурунку жыл', nextYear:'Кийинки жыл',
     heroLbl:'Калдык · {month}', spentShare:'Кирешенин {p}% жумшалды', noIncomeMeter:'Бул айда киреше али жок',
     income:'Кирешелер', expenses:'Чыгашалар', income1:'Киреше', expense1:'Чыгаша', calendar:'Календарь',
@@ -527,7 +527,7 @@ const I18N = {
     cats:{ food:'Азык-түлүк', cafe:'Кафе жана ресторандар', taxi:'Транспорт', home:'Турак жай жана коммуналдык', phone:'Байланыш жана интернет', health:'Ден соолук', clothes:'Кийим', fun:'Көңүл ачуу', gift_e:'Белектер', other_e:'Башка', salary:'Айлык', side:'Кошумча иш', gift_i:'Белектер', cash:'Кэшбэк жана пайыздар', other_i:'Башка' }
   },
   kk: {
-    appName:'Әмиян', finance:'Қаржы', analytics:'Талдау', profile:'Профиль', hello:'Сәлем, {name}', guest:'қонақ',
+    appName:'Delta', finance:'Қаржы', analytics:'Талдау', profile:'Профиль', hello:'Сәлем, {name}', guest:'қонақ',
     prevMonth:'Алдыңғы ай', nextMonth:'Келесі ай', chooseMonth:'Айды таңдау', prevYear:'Алдыңғы жыл', nextYear:'Келесі жыл',
     heroLbl:'Қалдық · {month}', spentShare:'Кірістің {p}% жұмсалды', noIncomeMeter:'Бұл айда кіріс әлі жоқ',
     income:'Кірістер', expenses:'Шығыстар', income1:'Кіріс', expense1:'Шығыс', calendar:'Күнтізбе',
@@ -553,7 +553,7 @@ const I18N = {
     cats:{ food:'Азық-түлік', cafe:'Кафе мен мейрамханалар', taxi:'Көлік', home:'Тұрғын үй және коммуналдық', phone:'Байланыс және интернет', health:'Денсаулық', clothes:'Киім', fun:'Ойын-сауық', gift_e:'Сыйлықтар', other_e:'Басқа', salary:'Жалақы', side:'Қосымша жұмыс', gift_i:'Сыйлықтар', cash:'Кэшбэк және пайыздар', other_i:'Басқа' }
   },
   en: {
-    appName:'Wallet', finance:'Finance', analytics:'Analytics', profile:'Profile', hello:'Hi, {name}', guest:'guest',
+    appName:'Delta', finance:'Finance', analytics:'Analytics', profile:'Profile', hello:'Hi, {name}', guest:'guest',
     prevMonth:'Previous month', nextMonth:'Next month', chooseMonth:'Choose month', prevYear:'Previous year', nextYear:'Next year',
     heroLbl:'Balance · {month}', spentShare:'{p}% of income spent', noIncomeMeter:'No income this month yet',
     income:'Income', expenses:'Expenses', income1:'Income', expense1:'Expense', calendar:'Calendar',
