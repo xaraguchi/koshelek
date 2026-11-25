@@ -687,6 +687,7 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;back
       <p style="font-size:13px;color:var(--muted);margin:2px 0 0" data-i18n="curNote"></p></div>
     <div class="panel-sec"><p class="lbl-s" data-i18n="reportTitle"></p>
       <div class="set-row"><div><b data-i18n="report"></b><p class="acc-hint" data-i18n="reportNote" style="margin:2px 0 0"></p></div><label class="sw"><input type="checkbox" id="repToggle" data-i18n-aria="report"><span></span></label></div>
+      <div class="set-row"><div><b data-i18n="remind"></b><p class="acc-hint" data-i18n="remindNote" style="margin:2px 0 0"></p></div><label class="sw"><input type="checkbox" id="remToggle" data-i18n-aria="remind"><span></span></label></div>
       <button type="button" class="btn ghost" id="repNow" data-i18n="reportNow"></button>
     </div>
     <div class="card dev" data-dev></div>
@@ -723,6 +724,7 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;back
     <div class="panel-sec"><label class="lbl-s" for="accName" data-i18n="accName"></label><input class="field" id="accName" maxlength="24"></div>
     <div class="panel-sec"><label class="lbl-s" for="accStart" data-i18n="startBal"></label><input class="field" id="accStart" inputmode="decimal" placeholder="0"></div>
     <p class="acc-hint" id="accNote" style="margin:0"></p>
+    <button type="button" class="btn danger" id="accClear" hidden style="width:100%"></button>
     <div class="row">
       <button type="button" class="btn danger" id="accDel" hidden></button>
       <button type="button" class="btn ghost" data-close style="flex:1" data-i18n="cancel"></button>
@@ -914,6 +916,8 @@ const I18N_Z = {"ru": {"cropTitle": "Фото профиля", "cropHint": "Пе
 Object.keys(I18N_Z).forEach(k => Object.assign(I18N[k], I18N_Z[k]));
 const I18N_H = {"ru": {"homeTitle": "Иконка на главном экране", "homeNote": "Открывайте Delta в одно касание, как обычное приложение.", "homeAdd": "Добавить на экран", "homeAdded": "Уже на главном экране ✓", "homeDone": "Иконка Delta добавлена на экран"}, "ky": {"homeTitle": "Башкы экрандагы иконка", "homeNote": "Deltaны кадимки тиркемедей бир басуу менен ачыңыз.", "homeAdd": "Экранга кошуу", "homeAdded": "Башкы экранда бар ✓", "homeDone": "Delta иконкасы экранга кошулду"}, "kk": {"homeTitle": "Басты экрандағы белгіше", "homeNote": "Delta-ны кәдімгі қосымша сияқты бір рет басып ашыңыз.", "homeAdd": "Экранға қосу", "homeAdded": "Басты экранда бар ✓", "homeDone": "Delta белгішесі экранға қосылды"}, "en": {"homeTitle": "Home screen icon", "homeNote": "Open Delta with one tap, like a regular app.", "homeAdd": "Add to home screen", "homeAdded": "Already on your home screen ✓", "homeDone": "Delta icon added to your home screen"}};
 Object.keys(I18N_H).forEach(k => Object.assign(I18N[k], I18N_H[k]));
+const I18N_R = {"ru": {"accClear": "Очистить счёт", "accClearSure": "Да, удалить все операции", "accClearNote": "Удалятся все операции этого счёта (и пополнения копилки и целей с него), баланс станет 0. Сам счёт останется.", "accCleared": "Счёт очищен", "remind": "Напоминания в 10:00 и 17:00", "remindNote": "Бот напомнит записать расходы и доходы за день."}, "ky": {"accClear": "Эсепти тазалоо", "accClearSure": "Ооба, бардык операцияларды өчүрүү", "accClearNote": "Бул эсептин бардык операциялары (топтомо жана максаттарга которуулар да) өчүрүлөт, баланс 0 болот. Эсептин өзү калат.", "accCleared": "Эсеп тазаланды", "remind": "Саат 10:00 жана 17:00дө эскертүү", "remindNote": "Бот күндүк чыгаша жана кирешелерди жазууну эскертет."}, "kk": {"accClear": "Шотты тазалау", "accClearSure": "Иә, барлық операцияларды жою", "accClearNote": "Бұл шоттың барлық операциялары (жинақ пен мақсаттарға аударымдар да) жойылады, баланс 0 болады. Шоттың өзі қалады.", "accCleared": "Шот тазаланды", "remind": "Сағат 10:00 және 17:00-де еске салу", "remindNote": "Бот күндік шығыстар мен кірістерді жазуды еске салады."}, "en": {"accClear": "Clear account", "accClearSure": "Yes, delete all entries", "accClearNote": "All entries of this account (including moves to the piggy bank and goals) will be deleted and the balance will be 0. The account itself stays.", "accCleared": "Account cleared", "remind": "Reminders at 10 AM and 5 PM", "remindNote": "The bot reminds you to log the day’s spending and income."}};
+Object.keys(I18N_R).forEach(k => Object.assign(I18N[k], I18N_R[k]));
 const CURRENCIES = [ { v:'сом', code:'KGS' }, { v:'₸', code:'KZT' }, { v:'$', code:'USD' }, { v:'₽', code:'RUB' } ];
 function detectLang(){
   let code = '';
@@ -1541,6 +1545,7 @@ function openAcc(id){
   $('accName').value = a ? a.name : '';
   $('accStart').value = a && a.start ? String(a.start).replace('.', ',') : '';
   $('accDel').hidden = !a; $('accDel').textContent = T.del; $('accDel').dataset.armed = '';
+  $('accClear').hidden = !a || !S.tx.some(x => x.acc === a.id) && !(+a.start); $('accClear').textContent = T.accClear; $('accClear').dataset.armed = '';
   const other = S.accounts.find(q => q.id !== accEdit.id);
   $('accNote').textContent = a ? (other ? T.accDelNote.replace('{name}', accName(other)) : '') : T.accLimit;
   accKind(); openPanel('accSheet');
@@ -1558,6 +1563,14 @@ $('accSheet').addEventListener('submit', e => {
   if (accEdit.id) S.accounts = S.accounts.map(a => a.id === rec.id ? rec : a);
   else { if (S.accounts.length >= MAX_ACC) { toast(T.accLimit); return; } S.accounts.push(rec); }
   save(); closePanels(); render(); haptic('success'); toast(T.accSaved);
+});
+$('accClear').addEventListener('click', () => {
+  const b = $('accClear');
+  if (!b.dataset.armed) { b.dataset.armed = '1'; b.textContent = T.accClearSure; $('accNote').textContent = T.accClearNote; haptic('warning'); return; }
+  const id = accEdit.id;
+  S.tx = S.tx.filter(x => x.acc !== id);
+  S.accounts = S.accounts.map(a => a.id === id ? Object.assign({}, a, { start: 0 }) : a);
+  save(); closePanels(); render(); haptic('success'); toast(T.accCleared);
 });
 $('accDel').addEventListener('click', () => {
   const b = $('accDel');
@@ -1728,14 +1741,16 @@ async function syncNow(){
   const now = new Date(), y = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1);
   const days = [now, y].map(d => Object.assign({ day: dayKey(d) }, totalsWhere(x => sameDay(x, d))));
   const month = Object.assign({ key: now.getFullYear() + '-' + pad(now.getMonth() + 1) }, totalsWhere(x => x.getFullYear() === now.getFullYear() && x.getMonth() === now.getMonth()));
-  try { await api('/api/sync', { tz: -now.getTimezoneOffset(), lang: S.lang, cur: S.cur, name: userName(), report: S.report !== false, onboarded: !!S.onboarded, days, month }); } catch(e){}
+  try { await api('/api/sync', { tz: -now.getTimezoneOffset(), lang: S.lang, cur: S.cur, name: userName(), report: S.report !== false, remind: S.remind !== false, onboarded: !!S.onboarded, days, month }); } catch(e){}
 }
 
 /* ---------- report setting ---------- */
 function renderReportSetting(){
   $('repToggle').checked = S.report !== false;
+  $('remToggle').checked = S.remind !== false;
   $('repNow').hidden = !(tg && tg.initData);
 }
+$('remToggle').addEventListener('change', e => { S.remind = e.target.checked; save(); haptic('success'); toast(T.remind + ': ' + (S.remind ? '✓' : '—')); });
 $('repToggle').addEventListener('change', e => { S.report = e.target.checked; save(); haptic('success'); toast(T.report + ': ' + (S.report ? '✓' : '—')); });
 $('repNow').addEventListener('click', async () => {
   const b = $('repNow'); b.disabled = true;
@@ -1871,7 +1886,7 @@ let ob = null;
 function defaultCur(){ return S.lang === 'kk' ? '₸' : S.lang === 'ru' ? '₽' : S.lang === 'en' ? '$' : 'сом'; }
 function openOnboarding(){
   checkHome(() => { if (!$('ob').hidden) renderOb(); });
-  ob = { step: 0, name: userName() || '', purpose: S.purpose ?? -1, focus: S.focus ?? -1, pay: -1, cur: S.cur || defaultCur(), report: S.report !== false };
+  ob = { step: 0, name: userName() || '', purpose: S.purpose ?? -1, focus: S.focus ?? -1, pay: -1, cur: S.cur || defaultCur(), report: S.report !== false, remind: S.remind !== false };
   $('ob').hidden = false; renderOb();
 }
 function obCanNext(){
@@ -1896,6 +1911,7 @@ function renderOb(){
     h = `<div class="ob-logo">✓</div><h1>${T.obDone.replace('{name}', esc(ob.name.trim()))}</h1><p>${T.obDoneSub}</p>
       <div class="card" style="display:flex;flex-direction:column;gap:10px">
         <div class="set-row"><div><b>${T.report}</b><p class="acc-hint" style="margin:2px 0 0">${T.reportNote}</p></div><label class="sw"><input type="checkbox" id="obRep" ${ob.report ? 'checked' : ''} aria-label="${esc(T.report)}"><span></span></label></div>
+        <div class="set-row"><div><b>${T.remind}</b><p class="acc-hint" style="margin:2px 0 0">${T.remindNote}</p></div><label class="sw"><input type="checkbox" id="obRem" ${ob.remind ? 'checked' : ''} aria-label="${esc(T.remind)}"><span></span></label></div>
         <p class="acc-hint" style="margin:0">${T.obPrivacy}</p></div>
       ${homeCardHTML()}
       <div class="ob-foot"><button type="button" class="btn ghost" data-obgo="5">${T.back}</button><button type="button" class="btn" style="flex:1" id="obFinish">${T.obOpen}</button></div>`;
@@ -1913,10 +1929,10 @@ $('ob').addEventListener('click', e => {
   if (t.dataset.obgo !== undefined) { const to = +t.dataset.obgo; if (to > ob.step && !obCanNext()) return; ob.step = Math.max(0, to); renderOb(); $('ob').scrollTop = 0; return; }
   if (t.id === 'obFinish') finishOnboarding();
 });
-$('ob').addEventListener('change', e => { if (e.target.id === 'obRep') ob.report = e.target.checked; });
+$('ob').addEventListener('change', e => { if (e.target.id === 'obRep') ob.report = e.target.checked; if (e.target.id === 'obRem') ob.remind = e.target.checked; });
 function finishOnboarding(){
   S.profile.name = ob.name.trim();
-  S.purpose = ob.purpose; S.focus = ob.focus; S.cur = ob.cur; S.report = ob.report;
+  S.purpose = ob.purpose; S.focus = ob.focus; S.cur = ob.cur; S.report = ob.report; S.remind = ob.remind;
   if (!S.tx.length) {
     S.accounts = ob.pay === 1 ? [{ id:'a1', name:'', kind:'cash', start:0 }]
       : ob.pay === 2 ? [{ id:'a1', name:'', kind:'card', start:0 }, { id:'a2', name:'', kind:'cash', start:0 }]
