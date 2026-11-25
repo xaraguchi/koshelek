@@ -452,6 +452,14 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;back
 .crop-ring{position:absolute;inset:0;border-radius:50%;box-shadow:inset 0 0 0 2px rgb(255 255 255 / .85);pointer-events:none;z-index:1}
 .crop-zoom{display:flex;align-items:center;gap:12px;color:var(--muted)}
 .crop-zoom input{flex:1;min-width:0;accent-color:var(--accent)}
+
+.home-card{display:flex;align-items:center;gap:12px 14px;flex-wrap:wrap}
+.home-card .hi{width:52px;height:52px;border-radius:15px;overflow:hidden;flex:none;box-shadow:0 6px 16px -6px color-mix(in srgb,var(--accent) 70%,transparent)}
+.home-card .hi img{width:100%;height:100%;display:block}
+.home-card .ht{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.home-card .ht b{font-size:15px}
+.home-card .btn{flex:1 1 100%;padding:12px 14px;font-size:14px}
+.mrow:disabled{opacity:1;cursor:default}
 @media (prefers-reduced-motion:no-preference){
   .sheet{animation:up .24s cubic-bezier(.2,.8,.2,1)}@keyframes up{from{transform:translateY(40px);opacity:.3}}
   .screen{animation:fade .2s ease-out}@keyframes fade{from{opacity:.4;transform:translateY(6px)}}
@@ -586,6 +594,8 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;back
         <span data-i18n="currency"></span><span class="mv" id="mvCur"></span><span class="chev">›</span></button>
       <button class="mrow" data-open="catSheet"><span class="mi"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7.5" height="7.5" rx="2"/><rect x="13.5" y="3" width="7.5" height="7.5" rx="2"/><rect x="3" y="13.5" width="7.5" height="7.5" rx="2"/><rect x="13.5" y="13.5" width="7.5" height="7.5" rx="2"/></svg></span>
         <span data-i18n="tabCats"></span><span class="mv" id="mvCats"></span><span class="chev">›</span></button>
+      <button class="mrow" id="homeRow" data-home hidden><span class="mi"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="6" y="2.5" width="12" height="19" rx="3"/><path d="M11 18h2"/><path d="M10 8.5h4v4h-4z"/></svg></span>
+        <span data-i18n="homeTitle"></span><span class="mv" id="mvHome"></span><span class="chev">›</span></button>
       <div class="mrow static"><span class="mi"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17.5 19a4.5 4.5 0 1 0-1.4-8.8A6 6 0 0 0 4.5 12a3.5 3.5 0 0 0 1 7z"/></svg></span>
         <span><span data-i18n="storage" style="display:block"></span><span id="syncNote"></span></span></div>
     </div>
@@ -902,6 +912,8 @@ const I18N_Y = {"ru": {"calc": "Калькулятор", "toExpense": "В рас
 Object.keys(I18N_Y).forEach(k => Object.assign(I18N[k], I18N_Y[k]));
 const I18N_Z = {"ru": {"cropTitle": "Фото профиля", "cropHint": "Перетащите фото и приблизьте, чтобы в круг попала нужная часть", "zoom": "Масштаб"}, "ky": {"cropTitle": "Профиль сүрөтү", "cropHint": "Тегерекке керектүү бөлүгү түшүшү үчүн сүрөттү жылдырып, чоңойтуңуз", "zoom": "Масштаб"}, "kk": {"cropTitle": "Профиль фотосы", "cropHint": "Шеңберге қажетті бөлігі түсуі үшін фотоны жылжытып, үлкейтіңіз", "zoom": "Масштаб"}, "en": {"cropTitle": "Profile photo", "cropHint": "Drag and zoom so the part you want fits in the circle", "zoom": "Zoom"}};
 Object.keys(I18N_Z).forEach(k => Object.assign(I18N[k], I18N_Z[k]));
+const I18N_H = {"ru": {"homeTitle": "Иконка на главном экране", "homeNote": "Открывайте Delta в одно касание, как обычное приложение.", "homeAdd": "Добавить на экран", "homeAdded": "Уже на главном экране ✓", "homeDone": "Иконка Delta добавлена на экран"}, "ky": {"homeTitle": "Башкы экрандагы иконка", "homeNote": "Deltaны кадимки тиркемедей бир басуу менен ачыңыз.", "homeAdd": "Экранга кошуу", "homeAdded": "Башкы экранда бар ✓", "homeDone": "Delta иконкасы экранга кошулду"}, "kk": {"homeTitle": "Басты экрандағы белгіше", "homeNote": "Delta-ны кәдімгі қосымша сияқты бір рет басып ашыңыз.", "homeAdd": "Экранға қосу", "homeAdded": "Басты экранда бар ✓", "homeDone": "Delta белгішесі экранға қосылды"}, "en": {"homeTitle": "Home screen icon", "homeNote": "Open Delta with one tap, like a regular app.", "homeAdd": "Add to home screen", "homeAdded": "Already on your home screen ✓", "homeDone": "Delta icon added to your home screen"}};
+Object.keys(I18N_H).forEach(k => Object.assign(I18N[k], I18N_H[k]));
 const CURRENCIES = [ { v:'сом', code:'KGS' }, { v:'₸', code:'KZT' }, { v:'$', code:'USD' }, { v:'₽', code:'RUB' } ];
 function detectLang(){
   let code = '';
@@ -1223,6 +1235,9 @@ function renderProfile(){
   $('mvCur').textContent = S.cur + ' · ' + T.cur[S.cur][0];
   $('mvCats').textContent = S.cats.length;
   $('syncNote').textContent = cloud ? T.syncCloud : T.syncLocal;
+  $('homeRow').hidden = homeStatus === 'unsupported';
+  $('homeRow').disabled = homeStatus === 'added';
+  $('mvHome').textContent = homeStatus === 'added' ? '✓' : '';
 }
 
 function renderCats(){
@@ -1855,6 +1870,7 @@ const OB_ICONS = { q2: ['👤','👨‍👩‍👧','🎯','💼'], q3: ['📉',
 let ob = null;
 function defaultCur(){ return S.lang === 'kk' ? '₸' : S.lang === 'ru' ? '₽' : S.lang === 'en' ? '$' : 'сом'; }
 function openOnboarding(){
+  checkHome(() => { if (!$('ob').hidden) renderOb(); });
   ob = { step: 0, name: userName() || '', purpose: S.purpose ?? -1, focus: S.focus ?? -1, pay: -1, cur: S.cur || defaultCur(), report: S.report !== false };
   $('ob').hidden = false; renderOb();
 }
@@ -1881,6 +1897,7 @@ function renderOb(){
       <div class="card" style="display:flex;flex-direction:column;gap:10px">
         <div class="set-row"><div><b>${T.report}</b><p class="acc-hint" style="margin:2px 0 0">${T.reportNote}</p></div><label class="sw"><input type="checkbox" id="obRep" ${ob.report ? 'checked' : ''} aria-label="${esc(T.report)}"><span></span></label></div>
         <p class="acc-hint" style="margin:0">${T.obPrivacy}</p></div>
+      ${homeCardHTML()}
       <div class="ob-foot"><button type="button" class="btn ghost" data-obgo="5">${T.back}</button><button type="button" class="btn" style="flex:1" id="obFinish">${T.obOpen}</button></div>`;
   }
   $('obIn').innerHTML = h;
@@ -1970,6 +1987,31 @@ $('cropSave').addEventListener('click', () => {
   crop.img = null;
   closePanels(); save(); render(); haptic('success'); toast(T.photoSaved);
 });
+
+
+/* ---------- add to home screen (Telegram Mini Apps 8.0+) ---------- */
+let homeStatus = 'unknown';
+const canHome = () => !!(tg && typeof tg.addToHomeScreen === 'function' && tg.isVersionAtLeast && tg.isVersionAtLeast('8.0'));
+function checkHome(cb){
+  if (!canHome()) { homeStatus = 'unsupported'; if (cb) cb(); return; }
+  try { tg.checkHomeScreenStatus(st => { homeStatus = st || 'unknown'; if (cb) cb(); if (view.tab === 'profile') renderProfile(); }); }
+  catch(e){ homeStatus = 'unsupported'; if (cb) cb(); }
+}
+function homeCardHTML(){
+  if (homeStatus === 'unsupported') return '';
+  const added = homeStatus === 'added';
+  return `<div class="card home-card"><span class="hi"><img src="${LOGO}" alt=""></span>
+    <span class="ht"><b>${T.homeTitle}</b><span class="acc-hint">${T.homeNote}</span></span>
+    <button type="button" class="btn${added ? ' ghost' : ''}" data-home ${added ? 'disabled' : ''}>${added ? '✓' : T.homeAdd}</button></div>`;
+}
+document.addEventListener('click', e => {
+  const b = e.target.closest('[data-home]'); if (!b || b.disabled) return;
+  try { tg.addToHomeScreen(); } catch(err){}
+});
+if (tg && tg.onEvent) {
+  tg.onEvent('homeScreenAdded', () => { homeStatus = 'added'; haptic('success'); toast(T.homeDone); if (!$('ob').hidden) renderOb(); render(); });
+}
+checkHome();
 
 /* ---------- boot ---------- */
 const DEFAULT_RU = I18N.ru.cats;
